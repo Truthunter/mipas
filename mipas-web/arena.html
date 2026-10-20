@@ -260,6 +260,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 
 /* Tata Surya */
 .space { background: #10172B; border-radius: 20px; padding: 18px 16px 16px; position: relative; overflow: hidden; }
+.space-fade, .space-hint { display: none; }
 .space::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 70% 20%, #fff6 50%, transparent 51%), radial-gradient(1.5px 1.5px at 40% 80%, #fff7 50%, transparent 51%), radial-gradient(1px 1px at 85% 70%, #fff5 50%, transparent 51%), radial-gradient(1px 1px at 55% 50%, #fff4 50%, transparent 51%); }
 .space-row { position: relative; display: grid; grid-template-columns: 54px repeat(8, 1fr); gap: 6px; align-items: center; }
 .sun { width: 58px; height: 116px; background: no-repeat right center / auto 100%; filter: drop-shadow(0 0 18px rgba(255,170,60,.55)); margin-left: -16px; }
@@ -319,8 +320,17 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 @media (max-width: 640px) {
   .games { grid-template-columns: 1fr; }
   .gbox { padding: 18px 14px; }
-  .space-row { grid-template-columns: 34px repeat(4, 1fr); row-gap: 28px; }
-  .space-row .sun { grid-row: span 2; width: 34px; height: 150px; margin-left: -14px; }
+  /* HP: satu baris orbit yang bisa digeser ke samping, seperti urutan asli tata surya */
+  .space { padding: 0; }
+  .space-scroll { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; padding: 18px 0 30px; -webkit-overflow-scrolling: touch; }
+  .space-scroll::-webkit-scrollbar { display: none; }
+  .space-row { grid-template-columns: 44px repeat(8, 62px); gap: 12px; width: max-content; padding: 0 28px 0 0; }
+  .space-row .sun { width: 44px; height: 96px; margin-left: 0; }
+  .space-row .slot { width: 62px; scroll-snap-align: center; }
+  .space-row::after { content: ''; position: absolute; left: 44px; right: 28px; top: 50%; height: 2px; background: repeating-linear-gradient(90deg, rgba(245,241,232,.22) 0 6px, transparent 6px 12px); z-index: -1; }
+  .space-fade { position: absolute; top: 0; bottom: 0; right: 0; width: 40px; background: linear-gradient(90deg, transparent, #10172B); pointer-events: none; z-index: 3; transition: opacity .2s; }
+  .space.at-end .space-fade { opacity: 0; }
+  .space-hint { display: block; position: absolute; left: 0; right: 0; bottom: 8px; text-align: center; font-size: 11.5px; color: var(--chalk-2); z-index: 3; pointer-events: none; }
   .match { gap: 8px; }
   .mitem { padding: 10px; font-size: 13px; }
   .opts.three { grid-template-columns: 1fr; }
@@ -1484,11 +1494,12 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
   }
   function renderSurya(marks) {
     const box = $('#surya-box');
+    const prevScroll = box.querySelector('.space-scroll')?.scrollLeft || 0;
     const full = P.slots.every((x) => x !== null);
     box.innerHTML = `
-      <div class="space"><div class="space-row"><span class="sun" title="Matahari" style="background-image:url(${PL.sun.src})"></span>
+      <div class="space"><div class="space-scroll"><div class="space-row"><span class="sun" title="Matahari" style="background-image:url(${PL.sun.src})"></span>
         ${P.slots.map((pi, k) => `<button type="button" class="slot ${pi !== null ? 'filled' : ''} ${marks ? (marks[k] ? 'ok' : 'no') : ''}" data-s="${k}" aria-label="Orbit ${k + 1}${pi !== null ? ': ' + PLANETS[pi].n : ''}">${pi !== null ? planetHTML(pi, 1.35) : ''}<span class="slot-num">${k + 1}</span></button>`).join('')}
-      </div></div>
+      </div></div><span class="space-fade"></span><span class="space-hint">← geser untuk melihat orbit lain →</span></div>
       <div class="tray">${P.tray.map((pi) => `<button type="button" class="pchip" data-p="${pi}"><span class="planet-wrap">${planetHTML(pi)}</span>${PLANETS[pi].n}</button>`).join('') || '<p class="surya-hint">Semua planet sudah di orbit. Tekan Periksa!</p>'}</div>
       <div class="result-actions"><button type="button" class="btn btn-primary" id="surya-check" ${full ? '' : 'disabled'}>Periksa urutan</button><button type="button" class="btn btn-ghost" id="surya-reset">Acak ulang</button></div>
       <p class="surya-hint">Orbit 1 paling dekat dengan Matahari.</p>`;
@@ -1496,6 +1507,20 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     box.querySelectorAll('.slot').forEach((b) => b.addEventListener('click', () => { const k = +b.dataset.s; const pi = P.slots[k]; if (pi === null) return; P.slots[k] = null; P.tray.push(pi); $('#surya-sc').textContent = P.slots.filter((x) => x !== null).length; renderSurya(); }));
     $('#surya-check').addEventListener('click', checkSurya);
     $('#surya-reset').addEventListener('click', startSurya);
+    // HP: jaga posisi geser, lalu arahkan ke orbit kosong berikutnya
+    const sc = box.querySelector('.space-scroll'), sp = box.querySelector('.space');
+    const edge = () => sp.classList.toggle('at-end', sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 4);
+    sc.addEventListener('scroll', edge, { passive: true });
+    sc.scrollLeft = prevScroll;
+    if (sc.scrollWidth > sc.clientWidth + 4) {
+      const k = P.slots.indexOf(null);
+      const target = box.querySelector(`.slot[data-s="${k < 0 ? 7 : Math.max(0, k)}"]`);
+      if (target) {
+        const left = target.offsetLeft - sc.clientWidth / 2 + target.offsetWidth / 2;
+        sc.scrollTo({ left: Math.max(0, left), behavior: reduce ? 'auto' : 'smooth' });
+      }
+    }
+    edge();
   }
   function checkSurya() {
     P.tries++;
