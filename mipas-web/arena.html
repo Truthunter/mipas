@@ -49,6 +49,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .stats { display: flex; gap: 8px; }
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pill .ico { font-size: 15px; }
+img.ico { width: 20px; height: 20px; display: block; }
+img.ei.off { filter: grayscale(1); opacity: .35; }
+img.ei, .result img.ei, .endcard img.ei { animation: none; width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin: 0 .1em; display: inline-block; }
 .pill.bump { animation: bump .45s ease; }
 
 /* Hub */
@@ -535,8 +538,8 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
   <div class="wrap top-in">
     <button class="brand" id="home-btn" type="button" aria-label="Kembali ke Arena"><img class="brand-logo" src="arena-assets/arena-logo.webp" alt="" width="48" height="48"><span class="brand-text">Arena MIPAS</span></button>
     <div class="stats">
-      <span class="pill" id="pill-streak" title="Hari berturut-turut ikut Tantangan Harian"><span class="ico">🔥</span><b id="streak">0</b><span class="lbl">hari</span></span>
-      <span class="pill" id="pill-xp" title="Poin pengalaman"><span class="ico">⭐</span><b id="xp">0</b><span class="lbl">XP</span></span>
+      <span class="pill" id="pill-streak" title="Hari berturut-turut ikut Tantangan Harian"><img class="ico" src="arena-assets/icon-fire.webp" alt="" width="20" height="20"><b id="streak">0</b><span class="lbl">hari</span></span>
+      <span class="pill" id="pill-xp" title="Poin pengalaman"><img class="ico" src="arena-assets/icon-star.webp" alt="" width="20" height="20"><b id="xp">0</b><span class="lbl">XP</span></span>
       <button type="button" class="profile" id="profile-btn" aria-label="Atur nama panggilan"><span class="avatar" id="avatar">?</span><span class="pname" id="pname">Isi nama</span><svg class="pedit" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.3V20h2.7l8-8-2.7-2.7-8 8zM19.7 7a1 1 0 0 0 0-1.4l-1.3-1.3a1 1 0 0 0-1.4 0l-1.1 1.1 2.7 2.7L19.7 7z"/></svg></button>
     </div>
   </div>
@@ -564,14 +567,14 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
         </div>
         <div class="gc-body">
           <h2>Tantangan Harian</h2>
-          <p>5 soal campuran setiap hari. Jaga 🔥 streak-mu dan bagikan hasilnya ke grup kelas.</p>
+          <p>5 soal campuran setiap hari. Jaga <span style="white-space:nowrap"><img class="ei" src="arena-assets/icon-fire.webp" alt=""> streak-mu</span> dan bagikan hasilnya ke grup kelas.</p>
           <div class="gc-meta"><span class="tag teal">Semua mapel</span><span class="tag">± 3 menit</span><span class="tag">Soal baru tiap hari</span></div>
           <span class="gc-cta">Mulai tantangan</span>
         </div>
       </button>
 
       <button class="game-card" type="button" data-open="glbb">
-        <span class="gc-status" id="glbb-status">0 / 15 ⭐</span>
+        <span class="gc-status" id="glbb-status">0 / 15 <img class="ei" src="arena-assets/icon-star.webp" alt="bintang"></span>
         <div class="gc-art glbb" aria-hidden="true">
           <span class="gc-formula">s = v₀t + ½at²</span>
           <div class="gc-track"></div><div class="gc-flag"></div><div class="gc-cart"></div>
@@ -600,7 +603,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       </button>
 
       <button class="game-card" type="button" data-open="surya">
-        <span class="gc-status" id="surya-status">0 / 3 ⭐</span>
+        <span class="gc-status" id="surya-status">0 / 3 <img class="ei" src="arena-assets/icon-star.webp" alt="bintang"></span>
         <div class="gc-art surya" aria-hidden="true">
           <div class="gc-orbit"><span class="sun" data-p="sun"></span>
             <img data-p="merkurius" alt="" style="left:80px;width:14px">
@@ -634,7 +637,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       </button>
 
       <button class="game-card" type="button" data-open="sila">
-        <span class="gc-status" id="sila-status">0 / 3 ⭐</span>
+        <span class="gc-status" id="sila-status">0 / 3 <img class="ei" src="arena-assets/icon-star.webp" alt="bintang"></span>
         <div class="gc-art sila" aria-hidden="true">
           <div class="gc-emoji"><img data-s="bintang" alt=""><img data-s="rantai" alt=""><img data-s="beringin" alt=""><img data-s="banteng" alt=""><img data-s="padi" alt=""></div>
           <img data-m="merahputih" alt="" width="199" height="240">
@@ -807,6 +810,10 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
   const PL = {"sun": {"src": "arena-assets/planet-sun.webp", "w": 220, "h": 217}, "merkurius": {"src": "arena-assets/planet-merkurius.webp", "w": 216, "h": 220}, "venus": {"src": "arena-assets/planet-venus.webp", "w": 218, "h": 220}, "bumi": {"src": "arena-assets/planet-bumi.webp", "w": 220, "h": 217}, "mars": {"src": "arena-assets/planet-mars.webp", "w": 220, "h": 219}, "jupiter": {"src": "arena-assets/planet-jupiter.webp", "w": 220, "h": 220}, "saturnus": {"src": "arena-assets/planet-saturnus.webp", "w": 220, "h": 117}, "uranus": {"src": "arena-assets/planet-uranus.webp", "w": 140, "h": 220}, "neptunus": {"src": "arena-assets/planet-neptunus.webp", "w": 220, "h": 220}};
   const SL = {"bintang": "arena-assets/sila-bintang.webp", "rantai": "arena-assets/sila-rantai.webp", "beringin": "arena-assets/sila-beringin.webp", "banteng": "arena-assets/sila-banteng.webp", "padi": "arena-assets/sila-padi.webp"};
   const LOGO = 'arena-assets/arena-logo.webp';
+  const FIRE = 'arena-assets/icon-fire.webp';
+  const STAR = 'arena-assets/icon-star.webp';
+  const plainTxt = (h) => h.replace(/<img[^>]*>/g, '⭐');
+  const SI = `<img class="ei" src="${STAR}" alt="bintang">`;
   const M = { explore: 'arena-assets/mipa-explore.webp', merahputih: 'arena-assets/mipa-merahputih.webp', success: 'arena-assets/mipa-success.webp', celebrate: 'arena-assets/mipa-celebrate.webp', thinking: 'arena-assets/mipa-thinking.webp', oops: 'arena-assets/mipa-oops.webp', scientist: 'arena-assets/mipa-scientist.webp', explorer: 'arena-assets/mipa-explorer.webp', astronaut: 'arena-assets/mipa-astronaut.webp', stopwatch: 'arena-assets/mipa-stopwatch.webp' };
   const $ = (s) => document.querySelector(s);
   document.querySelectorAll('img[data-m]').forEach((i) => (i.src = M[i.dataset.m]));
@@ -849,11 +856,11 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     { id: 'glb', m: 'scientist', tier: 'bronze', name: 'Pengemudi GLB', desc: 'Lulus level 1 dan 2 di Troli GLBB.', prog: () => [((S.glbb[0] || 0) > 0) + ((S.glbb[1] || 0) > 0), 2, 'level'] },
     { id: 'streak3', m: 'explore', tier: 'silver', name: 'Rajin 3 Hari', desc: 'Ikut tantangan harian 3 hari berturut-turut.', prog: () => [Math.min(curStreak(), 3), 3, 'hari'] },
     { id: 'asean', m: 'explorer', tier: 'silver', name: 'Penjelajah ASEAN', desc: 'Skor minimal 8 dari 10 di Tebak Negara ASEAN.', prog: () => [Math.min(S.best.asean || 0, 8), 8, 'benar'] },
-    { id: 'sila', m: 'merahputih', tier: 'silver', name: 'Sahabat Pancasila', desc: 'Selesaikan Pasangkan Sila dengan maksimal 1 kali salah.', prog: () => [S.best.sila || 0, 3, '⭐'] },
+    { id: 'sila', m: 'merahputih', tier: 'silver', name: 'Sahabat Pancasila', desc: 'Selesaikan Pasangkan Sila dengan maksimal 1 kali salah.', prog: () => [S.best.sila || 0, 3, SI] },
     { id: 'perfect', m: 'celebrate', tier: 'gold', name: 'Sempurna', desc: 'Jawab benar 5 dari 5 soal tantangan harian.', prog: () => [bestDaily(), 5, 'benar'] },
-    { id: 'astro', m: 'astronaut', tier: 'gold', name: 'Astronom Cilik', desc: 'Susun tata surya dengan benar pada percobaan pertama.', prog: () => [S.best.surya || 0, 3, '⭐'] },
+    { id: 'astro', m: 'astronaut', tier: 'gold', name: 'Astronom Cilik', desc: 'Susun tata surya dengan benar pada percobaan pertama.', prog: () => [S.best.surya || 0, 3, SI] },
     { id: 'kilat', m: 'stopwatch', tier: 'gold', name: 'Kalkulator Kilat', desc: '15 jawaban benar dalam 60 detik di Hitung Kilat.', prog: () => [Math.min(S.best.kilat || 0, 15), 15, 'benar'] },
-    { id: 'glbbpro', m: 'scientist', tier: 'gold', name: 'Ahli GLBB', desc: 'Raih minimal ⭐⭐ di semua 5 level Troli GLBB.', prog: () => [LEVELS.filter((_, i) => (S.glbb[i] || 0) >= 2).length, 5, 'level'] },
+    { id: 'glbbpro', m: 'scientist', tier: 'gold', name: 'Ahli GLBB', desc: 'Raih minimal ' + SI + SI + ' di semua 5 level Troli GLBB.', prog: () => [LEVELS.filter((_, i) => (S.glbb[i] || 0) >= 2).length, 5, 'level'] },
   ];
   const TIER = { bronze: 'Perunggu', silver: 'Perak', gold: 'Emas' };
   const RANKS = [
@@ -925,7 +932,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     $('#aw-close').focus({ preventScroll: true });
     $('#aw-close').addEventListener('click', closeAward);
     const sh = $('#aw-share');
-    const txt = `${who()} dapat lencana ${TIER[b.tier]} "${b.name}" di Arena MIPAS! 🏅\n${b.desc}\nAyo coba juga: mipas.vercel.app/arena`;
+    const txt = `${who()} dapat lencana ${TIER[b.tier]} "${b.name}" di Arena MIPAS! 🏅\n${plainTxt(b.desc)}\nAyo coba juga: mipas.vercel.app/arena`;
     if (sh) sh.addEventListener('click', () => shareImage(() => drawBadgeCard(b), `lencana-${b.id}.png`, txt));
 
     if (on && fresh) confetti(); else stopConfetti();
@@ -1012,11 +1019,11 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     const d = S.daily[today()];
     $('#daily-status').textContent = d && d.done ? `Selesai: ${d.score}/5 ✓` : 'Belum dimainkan hari ini';
     const stars = LEVELS.reduce((n, _, i) => n + (S.glbb[i] || 0), 0);
-    $('#glbb-status').textContent = `${stars} / ${LEVELS.length * 3} ⭐`;
+    $('#glbb-status').innerHTML = `${stars} / ${LEVELS.length * 3} ${SI}`;
     $('#asean-status').textContent = S.best.asean != null ? `Terbaik ${S.best.asean}/10` : 'Belum dimainkan';
-    $('#surya-status').textContent = `${S.best.surya || 0} / 3 ⭐`;
+    $('#surya-status').innerHTML = `${S.best.surya || 0} / 3 ${SI}`;
     $('#kilat-status').textContent = S.best.kilat ? `Rekor ${S.best.kilat} benar` : 'Belum ada rekor';
-    $('#sila-status').textContent = `${S.best.sila || 0} / 3 ⭐`;
+    $('#sila-status').innerHTML = `${S.best.sila || 0} / 3 ${SI}`;
     renderBadges();
     renderStats();
   }
@@ -1151,7 +1158,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
         <div class="big">${score}/5</div>
         <div class="grid-share">${D.answers.map((a, k) => `<span class="${a ? 'ok' : 'no'}" style="animation-delay:${k * 0.08}s"></span>`).join('')}</div>
         <p style="color:var(--ink-2);margin:6px 0 0">${msg[1]}</p>
-        ${D.practice ? '' : `<div class="share-box"><pre id="share-text">${escH(shareText())}</pre><div class="share-btns"><button type="button" class="btn btn-yellow" id="share-img"><svg class="ico-share" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l4 4h-3v8h-2V7H8l4-4zm-7 9h2v7h10v-7h2v9H5v-9z"/></svg>Bagikan hasil</button></div></div>`}
+        ${D.practice ? '' : `<div class="share-box"><pre id="share-text">${escH(shareText()).replace('🔥', `<img class="ei" src="${FIRE}" alt="🔥">`)}</pre><div class="share-btns"><button type="button" class="btn btn-yellow" id="share-img"><svg class="ico-share" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l4 4h-3v8h-2V7H8l4-4zm-7 9h2v7h10v-7h2v9H5v-9z"/></svg>Bagikan hasil</button></div></div>`}
         ${wrong.length ? `<div class="review"><b style="font-size:14px">Video untuk soal yang belum tepat:</b>${wrong.map((q) => `<a href="${yt(q.v)}" target="_blank" rel="noopener">▶ <span>${q.vt}</span></a>`).join('')}</div>` : ''}
         <div class="result-actions">
           <button type="button" class="btn btn-ghost" id="practice">Latihan soal acak</button>
@@ -1353,7 +1360,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       const prev = S.glbb[L] || 0;
       if (stars > prev) { addXP((stars - prev) * 5); S.glbb[L] = stars; save(); }
       const last = L === LEVELS.length - 1;
-      setLab(stars === 3 ? M.celebrate : M.success, `${'⭐'.repeat(stars)} ${stars === 3 ? 'Tepat sasaran!' : 'Hampir pas!'}`, stars === 3 ? (last ? 'Semua level selesai. Kamu Ahli GLBB!' : 'Level berikutnya terbuka.') : `Selisih ${fmt(off)} m dari bendera. Coba hitung lagi untuk ⭐⭐⭐.`, true);
+      setLab(stars === 3 ? M.celebrate : M.success, `${SI.repeat(stars)} ${stars === 3 ? 'Tepat sasaran!' : 'Hampir pas!'}`, stars === 3 ? (last ? 'Semua level selesai. Kamu Ahli GLBB!' : 'Level berikutnya terbuka.') : `Selisih ${fmt(off)} m dari bendera. Coba hitung lagi untuk ${SI.repeat(3)}.`, true);
       if ((S.glbb[0] || 0) && (S.glbb[1] || 0)) award('glb');
       if (LEVELS.every((_, i) => (S.glbb[i] || 0) >= 2)) award('glbbpro');
       renderLevels();
@@ -1377,7 +1384,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
      ===================================================== */
   const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-  const starStr = (n) => '⭐'.repeat(n) + '☆'.repeat(3 - n);
+  const starStr = (n) => SI.repeat(n) + SI.replace('class="ei"', 'class="ei off"').repeat(3 - n);
   function sideSet(prefix, img, title, text, hop) {
     const el = $(`#${prefix}-mipa`); el.src = img;
     if (hop) { el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop'); }
@@ -1446,7 +1453,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     $('#asean-sc').textContent = 0;
     sideSet('asean', M.explorer, 'Siap menjelajah?', 'Ada 11 negara anggota ASEAN, termasuk Timor-Leste yang bergabung tahun 2025.');
     box.innerHTML = `<div class="intro"><img src="${M.explorer}" alt="" width="191" height="240"><h3>Tebak Negara ASEAN</h3>
-      <p>10 soal tentang ibu kota, mata uang, dan fakta negara-negara Asia Tenggara. Jawab beruntun untuk kombo 🔥.</p>
+      <p>10 soal tentang ibu kota, mata uang, dan fakta negara-negara Asia Tenggara. Jawab beruntun untuk kombo <img class="ei" src="arena-assets/icon-fire.webp" alt="">.</p>
       <button type="button" class="btn btn-primary" id="asean-go">Mulai ▶</button>${S.best.asean != null ? `<p class="countdown">Skor terbaikmu: ${S.best.asean}/10</p>` : ''}</div>`;
     $('#asean-go').addEventListener('click', startAsean);
   }
@@ -1455,7 +1462,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     const q = A.qs[A.i];
     $('#asean-box').innerHTML = `
       <div class="progress">${A.qs.map((_, k) => `<span class="${k < A.i ? (A.qs[k].ok ? 'ok' : 'no') : k === A.i ? 'cur' : ''}"></span>`).join('')}</div>
-      <div class="ghud"><span class="qnum">Soal ${A.i + 1} dari 10</span><span class="combo" id="asean-combo">${A.combo > 1 ? `🔥 Kombo ×${A.combo}` : ''}</span></div>
+      <div class="ghud"><span class="qnum">Soal ${A.i + 1} dari 10</span><span class="combo" id="asean-combo">${A.combo > 1 ? `<img class="ei" src="${FIRE}" alt="">Kombo ×${A.combo}` : ''}</span></div>
       <p class="asean-q"><small>${q.k}</small>${q.q}</p>
       <div class="opts two">${q.opts.map((o, k) => `<button type="button" class="opt" data-k="${k}"><b>${'ABCD'[k]}</b><span>${o}</span></button>`).join('')}</div>`;
     $('#asean-box').querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => answerAsean(b, q)));
@@ -1624,7 +1631,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     if (K.over) return;
     const ok = btn.dataset.v === K.cur.a;
     $('#k-q').querySelectorAll('.opt').forEach((b) => { b.disabled = true; if (b.dataset.v === K.cur.a) b.classList.add('right'); else if (b === btn) b.classList.add('wrong'); });
-    if (ok) { K.score++; K.combo++; $('#k-score').textContent = K.score; $('#kilat-sc').textContent = K.score; const c = $('#k-combo'); c.textContent = K.combo > 2 ? `🔥 ×${K.combo}` : ''; c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+    if (ok) { K.score++; K.combo++; $('#k-score').textContent = K.score; $('#kilat-sc').textContent = K.score; const c = $('#k-combo'); c.innerHTML = K.combo > 2 ? `<img class="ei" src="${FIRE}" alt="">×${K.combo}` : ''; c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
     else { K.wrong++; K.combo = 0; K.left = Math.max(0, K.left - 2); $('#k-combo').innerHTML = '<span class="penalty">−2 detik</span>'; }
     setTimeout(() => { if (!K.over) nextK(); }, ok ? 250 : 700);
   }
@@ -1750,7 +1757,12 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       x.fillStyle = '#fff'; x.font = '800 58px "Plus Jakarta Sans", sans-serif'; x.textBaseline = 'middle'; x.fillText(a ? '✓' : '✕', bx + sz / 2, by + sz / 2 + 4); x.textBaseline = 'alphabetic';
     });
     x.fillStyle = '#F5F1E8'; x.font = '700 40px "Plus Jakarta Sans", sans-serif';
-    x.fillText(`🔥 Streak ${S.streak} hari   ·   ⭐ ${S.xp} XP`, CW / 2, 1110);
+    { const t1 = `Streak ${S.streak} hari   ·   `, t2 = `${S.xp} XP`, w1 = x.measureText(t1).width, w2 = x.measureText(t2).width, fi = await loadImg(FIRE), st = await loadImg(STAR), isz = 46, g = 12, gx = CW / 2 - (isz + g + w1 + isz + g + w2) / 2;
+      x.textAlign = 'left';
+      if (fi) x.drawImage(fi, gx, 1110 - 38, isz, isz);
+      x.fillText(t1, gx + isz + g, 1110);
+      const sx = gx + isz + g + w1; if (st) x.drawImage(st, sx, 1110 - 38, isz, isz);
+      x.fillText(t2, sx + isz + g, 1110); x.textAlign = 'center'; }
     return c;
   }
   async function drawBadgeCard(b) {
@@ -1778,7 +1790,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     // teks
     x.fillStyle = '#F5F1E8'; x.font = '800 78px "Bricolage Grotesque", sans-serif'; x.fillText(b.name, cx, 1000);
     x.fillStyle = '#9FB0CF'; x.font = '600 36px "Plus Jakarta Sans", sans-serif';
-    const used = wrapText(x, b.desc, cx, 1062, CW - 220, 48);
+    const used = wrapText(x, plainTxt(b.desc), cx, 1062, CW - 220, 48);
     if (S.name) { x.fillStyle = '#FFD45C'; x.font = '700 34px "Plus Jakarta Sans", sans-serif'; x.fillText(`Diraih oleh ${S.name}`, cx, 1062 + used + 22); }
     return c;
   }
