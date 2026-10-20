@@ -1,0 +1,1792 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Main 6 game belajar dari materi MIPAS Channel: Tantangan Harian, Troli GLBB, Tebak Negara ASEAN, Susun Tata Surya, Hitung Kilat, dan Pasangkan Sila.">
+<meta name="theme-color" content="#FBF7F0">
+<meta property="og:title" content="Arena MIPAS · Main sambil belajar bareng Mipa">
+<meta property="og:description" content="6 game belajar seru dari MIPAS Channel. Kumpulkan XP dan lencana!">
+<meta property="og:image" content="arena-assets/arena-logo.webp">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Arena MIPAS · Main sambil belajar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: hub dua kartu game → layar game (kuis / papan GLBB) di halaman yang sama */
+:root {
+  color-scheme: light;
+  --bg: #FBF7F0; --paper: #FFFFFF; --tint: #F3EDE2; --line: #E6DED0;
+  --ink: #15233F; --ink-2: #4A5672; --ink-3: #7A8399;
+  --teal: #0F6E66; --teal-bg: #DDF1EE; --orange: #F2782A; --orange-bg: #FDE6D5;
+  --yellow: #FFD45C; --red: #D64545; --red-bg: #FBE3E1; --green: #2E8B57; --green-bg: #DDF3E6;
+  --board: #1E3155; --board-edge: #15233F; --chalk: #F5F1E8; --chalk-2: #9FB0CF;
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --shadow: 0 1px 0 rgba(21,35,63,.04), 0 12px 30px -14px rgba(21,35,63,.22);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; border-radius: 8px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.note { background: var(--yellow); font-size: 13px; font-weight: 600; text-align: center; padding: 8px 16px; }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: rgba(251,247,240,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 11; background: var(--bg); }
+.top-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 800 20px/1 var(--display); background: none; border: 0; padding: 0; cursor: pointer; }
+.brand-logo { width: 48px; height: 48px; display: block; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+.brand:hover .brand-logo { transform: rotate(-10deg) scale(1.06); }
+.brand-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--ink); color: var(--yellow); display: grid; place-items: center; transform: rotate(-6deg); font-size: 18px; }
+.stats { display: flex; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pill .ico { font-size: 15px; }
+.pill.bump { animation: bump .45s ease; }
+
+/* Hub */
+.hub-hero { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-block: 36px 24px; }
+.eyebrow { margin: 0 0 10px; font-weight: 800; font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); }
+.hub-hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; }
+.hub-hero p.lead { color: var(--ink-2); max-width: 36em; margin: 14px 0 0; font-size: 1.05rem; }
+.hub-mipa { width: 150px; height: auto; animation: sway 5s ease-in-out infinite; transform-origin: 50% 90%; filter: drop-shadow(0 12px 14px rgba(21,35,63,.15)); }
+.games { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-bottom: 28px; }
+.game-card { position: relative; text-align: left; border: 0; padding: 0; cursor: pointer; border-radius: 24px; overflow: hidden; background: var(--paper); box-shadow: var(--shadow); border: 1px solid var(--line); display: flex; flex-direction: column; transition: transform .2s cubic-bezier(.3,1.4,.5,1), box-shadow .2s; }
+.game-card:hover { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 22px 40px -18px rgba(21,35,63,.35); }
+.game-card:active { transform: translateY(-1px) scale(.99); }
+.gc-art { position: relative; height: 170px; display: grid; place-items: center; overflow: hidden; }
+.gc-art.daily { background: radial-gradient(circle at 80% 20%, rgba(255,212,92,.55) 0 22%, transparent 23%), var(--teal); }
+.gc-art.glbb { background: var(--board); }
+.gc-art img { position: absolute; right: 14px; bottom: -6px; width: 118px; height: auto; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+.game-card:hover .gc-art > img { transform: translateY(-6px) rotate(-4deg); }
+.gc-tiles { display: flex; gap: 6px; position: absolute; left: 22px; top: 50%; transform: translateY(-50%); }
+.gc-tiles span { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; color: var(--ink); background: var(--chalk); box-shadow: 0 4px 0 rgba(0,0,0,.18); animation: flip .6s cubic-bezier(.3,1.4,.5,1) both; }
+.gc-tiles span:nth-child(2) { animation-delay: .08s; } .gc-tiles span:nth-child(3) { animation-delay: .16s; } .gc-tiles span:nth-child(4) { animation-delay: .24s; } .gc-tiles span:nth-child(5) { animation-delay: .32s; }
+.gc-tiles .ok { background: #7FD6A5; } .gc-tiles .no { background: #F2A39B; }
+.gc-track { position: absolute; left: 20px; right: 150px; bottom: 46px; height: 3px; background: repeating-linear-gradient(90deg, var(--chalk-2) 0 8px, transparent 8px 14px); }
+.gc-cart { position: absolute; left: 20px; bottom: 49px; width: 34px; height: 20px; border-radius: 6px; background: var(--yellow); animation: roll 2.6s cubic-bezier(.55,0,1,.45) infinite; }
+.gc-flag { position: absolute; right: 158px; bottom: 49px; width: 3px; height: 40px; background: var(--chalk); }
+.gc-flag::after { content: ''; position: absolute; left: 3px; top: 0; border-left: 18px solid var(--orange); border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+.gc-formula { position: absolute; left: 22px; top: 22px; color: var(--yellow); font: 600 20px var(--display); letter-spacing: 0; }
+.gc-body { padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 8px; }
+.gc-body h2 { font-size: 24px; }
+.gc-body p { margin: 0; color: var(--ink-2); font-size: 14.5px; }
+.gc-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tag { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--tint); color: var(--ink-2); }
+.tag.teal { background: var(--teal-bg); color: var(--teal); } .tag.orange { background: var(--orange-bg); color: #B4520F; }
+.gc-cta { margin-top: 10px; display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; font-weight: 800; color: var(--teal); }
+.gc-cta::after { content: '→'; transition: transform .2s; }
+.game-card:hover .gc-cta::after { transform: translateX(4px); }
+.gc-status { position: absolute; top: 14px; right: 14px; z-index: 1; background: var(--paper); border-radius: 999px; padding: 5px 11px; font-size: 12.5px; font-weight: 800; box-shadow: var(--shadow); }
+
+.badges { padding-bottom: 48px; }
+.badges h3 { font-size: 20px; margin-bottom: 12px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.badge { display: flex; align-items: center; gap: 10px; padding: 10px 14px 10px 10px; border-radius: 16px; background: var(--paper); border: 2px dashed var(--line); color: var(--ink-3); font-weight: 700; font-size: 14px; }
+.badge i { font-style: normal; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--tint); font-size: 17px; filter: grayscale(1); opacity: .6; }
+.badge small { display: block; font-weight: 500; font-size: 12px; color: var(--ink-3); }
+.badge.on { border-style: solid; border-color: var(--ink); color: var(--ink); }
+.badge.on i { background: var(--yellow); filter: none; opacity: 1; }
+.badge.on.pop { animation: pop .5s cubic-bezier(.2,.8,.3,1.4); }
+
+/* Shared screen */
+.screen-head { display: flex; align-items: center; gap: 12px; padding-block: 22px 14px; }
+.back { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; border: 2px solid var(--ink); background: var(--paper); border-radius: 999px; padding: 7px 14px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background .15s, color .15s; }
+.back:hover { background: var(--ink); color: #fff; }
+.screen-head h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 999px; border: 2px solid transparent; font-weight: 800; font-size: 15px; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; }
+.btn:active { transform: translateY(3px); }
+.btn-primary { background: var(--teal); color: #fff; box-shadow: 0 5px 0 -1px #0A4F49; }
+.btn-primary:active { box-shadow: 0 2px 0 -1px #0A4F49; }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.btn-ghost { background: var(--paper); border-color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: #fff; }
+.btn-yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 5px 0 -1px #C9A035; }
+
+/* Daily quiz */
+.quiz { display: grid; grid-template-columns: 1fr 260px; gap: 22px; padding-bottom: 48px; align-items: start; }
+.qcard { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 26px; box-shadow: var(--shadow); min-width: 0; }
+.progress { display: flex; gap: 6px; margin-bottom: 20px; }
+.progress span { flex: 1; height: 8px; border-radius: 999px; background: var(--tint); transition: background .3s; }
+.progress .cur { background: var(--ink); }
+.progress .ok { background: var(--green); }
+.progress .no { background: var(--red); }
+.qmeta { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.qnum { font-weight: 800; color: var(--ink-3); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.qtext { font: 700 clamp(1.15rem, 2.4vw, 1.45rem)/1.4 var(--font); margin: 0 0 18px; letter-spacing: -0.01em; }
+.opts { display: grid; gap: 10px; }
+.opt { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px 16px; border-radius: 16px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; font-weight: 600; font-size: 15.5px; transition: border-color .15s, background .15s, transform .15s; }
+.opt:hover:not(:disabled) { border-color: var(--ink); transform: translateX(3px); }
+.opt b { flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--tint); font-size: 13.5px; }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--green); background: var(--green-bg); }
+.opt.right b { background: var(--green); color: #fff; }
+.opt.wrong { border-color: var(--red); background: var(--red-bg); animation: shake .4s; }
+.opt.wrong b { background: var(--red); color: #fff; }
+.opt.dim { opacity: .55; }
+.feedback { margin-top: 16px; border-radius: 16px; padding: 14px 16px; font-size: 14.5px; display: flex; gap: 12px; align-items: flex-start; animation: rise .3s ease both; }
+.feedback.ok { background: var(--green-bg); }
+.feedback.no { background: var(--orange-bg); }
+.feedback strong { display: block; font: 800 16px var(--display); margin-bottom: 2px; }
+.feedback a { color: var(--ink); font-weight: 700; }
+.qfoot { display: flex; justify-content: flex-end; margin-top: 18px; }
+.side { background: var(--board); color: var(--chalk); border-radius: 24px; padding: 22px; text-align: center; position: sticky; top: 84px; }
+.side img { width: 140px; height: auto; margin: -8px auto 4px; display: block; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.side img.hop { animation: hop .6s cubic-bezier(.3,1.6,.5,1); }
+.side p { margin: 0; font-size: 14.5px; color: var(--chalk-2); }
+.side strong { display: block; color: var(--chalk); font: 800 18px var(--display); margin-bottom: 4px; }
+.side .score { font: 800 44px/1 var(--display); color: var(--yellow); margin: 12px 0 2px; font-variant-numeric: tabular-nums; }
+
+.result { text-align: center; }
+.result img { width: 150px; height: auto; display: block; margin: 0 auto 8px; animation: hop .7s cubic-bezier(.3,1.6,.5,1); }
+.result h3 { font-size: 30px; }
+.result .big { font: 800 64px/1 var(--display); color: var(--teal); margin: 12px 0 4px; font-variant-numeric: tabular-nums; }
+.grid-share { display: inline-flex; gap: 6px; margin: 10px 0 4px; }
+.grid-share span { width: 30px; height: 30px; border-radius: 8px; animation: flip .5s cubic-bezier(.3,1.4,.5,1) both; }
+.grid-share .ok { background: var(--green); } .grid-share .no { background: var(--red); }
+.share-box { margin: 18px auto 0; max-width: 420px; background: var(--tint); border-radius: 16px; padding: 14px; text-align: left; }
+.share-box pre { margin: 0 0 10px; white-space: pre-wrap; font: 600 14px/1.5 var(--font); user-select: all; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+.review { margin-top: 22px; text-align: left; display: grid; gap: 8px; }
+.review a { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--orange-bg); color: var(--ink); text-decoration: none; font-weight: 600; font-size: 14px; }
+.review a:hover { background: #FBD5BA; }
+.countdown { margin-top: 14px; color: var(--ink-3); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 30; animation: rise .25s ease both; }
+
+/* GLBB */
+.lab { display: grid; grid-template-columns: 1fr 300px; gap: 20px; padding-bottom: 48px; align-items: start; }
+.board { background: var(--board-edge); border-radius: 24px; padding: 12px; box-shadow: 0 26px 50px -26px rgba(21,35,63,.6); min-width: 0; }
+.board-in { background: var(--board); border-radius: 16px; overflow: hidden; position: relative; }
+.levelbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px 0; color: var(--chalk); flex-wrap: wrap; }
+.levels { display: flex; gap: 6px; }
+.lv { width: 34px; height: 34px; border-radius: 10px; border: 2px solid rgba(245,241,232,.25); background: transparent; color: var(--chalk); font-weight: 800; font-size: 13.5px; cursor: pointer; transition: background .15s, border-color .15s; }
+.lv:hover:not(:disabled) { border-color: var(--chalk); }
+.lv.cur { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
+.lv:disabled { opacity: .35; cursor: not-allowed; }
+.lv-stars { font-size: 9px; display: block; line-height: 1; margin-top: -2px; letter-spacing: -1px; }
+.mission { font-size: 14px; color: var(--chalk-2); }
+.mission b { color: var(--yellow); }
+canvas { display: block; width: 100%; height: 280px; }
+.readout { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(245,241,232,.12); }
+.readout div { padding: 10px 14px; color: var(--chalk-2); font-size: 12.5px; }
+.readout div + div { border-left: 1px solid rgba(245,241,232,.12); }
+.readout b { display: block; color: var(--chalk); font: 700 20px var(--display); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 20px; box-shadow: var(--shadow); display: grid; gap: 16px; }
+.ctrl label { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.ctrl label span { font: 800 20px var(--display); color: var(--teal); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.ctrl small { display: block; color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+.ctrl.locked label span { color: var(--ink-3); }
+.ctrl.locked small::before { content: '🔒 Terkunci di level ini. '; font-weight: 700; color: var(--ink-2); }
+input[type=range] { width: 100%; accent-color: var(--teal); height: 28px; cursor: pointer; }
+input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
+.formula { background: var(--tint); border-radius: 14px; padding: 12px 14px; font-size: 14px; color: var(--ink-2); }
+.formula code { display: block; font: 700 15px/1.6 var(--font); color: var(--ink); font-variant-numeric: tabular-nums; }
+.formula code em { font-style: italic; }
+.lab-msg { display: flex; gap: 12px; align-items: center; min-height: 72px; }
+.lab-msg img { width: 64px; height: auto; flex: none; }
+.lab-msg img.hop { animation: hop .6s cubic-bezier(.3,1.6,.5,1); }
+.lab-msg p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.lab-msg strong { display: block; color: var(--ink); font: 800 16px var(--display); }
+.stars-big { font-size: 22px; letter-spacing: 2px; }
+.lab-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.lab-actions .btn { flex: 1 1 auto; }
+
+
+/* ===== Hub 6 kartu ===== */
+.games { grid-template-columns: repeat(3, 1fr); }
+.gc-art { height: 150px; }
+.gc-art img { width: 100px; }
+.gc-body h2 { font-size: 21px; }
+.gc-art.asean { background: radial-gradient(circle at 15% 85%, rgba(255,255,255,.12) 0 30%, transparent 31%), #2E5AAC; }
+.gc-art.surya { background: #10172B; }
+.gc-art.kilat { background: var(--orange); }
+.gc-art.sila { background: #B83A3A; }
+.gc-chips { position: absolute; left: 20px; top: 26px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.gc-chips span { background: var(--paper); color: var(--ink); font-weight: 800; font-size: 13px; padding: 6px 12px; border-radius: 999px; box-shadow: 0 4px 0 rgba(0,0,0,.15); animation: pop .5s cubic-bezier(.2,.8,.3,1.4) both; }
+.gc-chips span:nth-child(2) { animation-delay: .1s; margin-left: 18px; } .gc-chips span:nth-child(3) { animation-delay: .2s; }
+.gc-chips span.hit { background: var(--yellow); }
+.gc-orbit { position: absolute; inset: 0; }
+.gc-orbit .sun { position: absolute; left: -52px; top: 50%; width: 124px; height: 124px; margin: -62px 0 0; background: no-repeat center / contain; filter: drop-shadow(0 0 22px rgba(255,170,60,.6)); }
+.gc-orbit img { position: absolute; top: 50%; transform: translateY(-50%); height: auto; filter: drop-shadow(0 3px 6px rgba(0,0,0,.4)); animation: floaty 3s ease-in-out infinite; }
+.gc-orbit i { position: absolute; top: 50%; border-radius: 50%; transform: translateY(-50%); animation: floaty 3s ease-in-out infinite; }
+.gc-kilat { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); color: #fff; font: 800 34px var(--display); letter-spacing: -0.02em; }
+.gc-kilat small { display: block; font: 700 13px var(--font); opacity: .85; letter-spacing: 0; }
+.gc-ring { position: absolute; right: 22px; top: 50%; width: 76px; height: 76px; margin-top: -38px; border-radius: 50%; background: conic-gradient(var(--yellow) var(--p, 70%), rgba(255,255,255,.25) 0); display: grid; place-items: center; animation: tick 3s linear infinite; }
+.gc-ring::before { content: '60'; width: 58px; height: 58px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; color: #fff; font: 800 20px var(--display); }
+@property --p { syntax: '<percentage>'; inherits: false; initial-value: 100%; }
+@keyframes tick { from { --p: 100%; } to { --p: 0%; } }
+.gc-emoji { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); display: flex; gap: 5px; z-index: 0; }
+.gc-art.sila img[data-m] { z-index: 1; }
+.gc-art .gc-emoji img { position: static; transform: none; width: 34px; height: 34px; display: block; border-radius: 7px; box-shadow: 0 0 0 2px rgba(255,255,255,.9), 0 4px 0 rgba(0,0,0,.18); animation: flip .6s cubic-bezier(.3,1.4,.5,1) both; }
+.gc-emoji img:nth-child(2) { animation-delay: .08s; } .gc-emoji img:nth-child(3) { animation-delay: .16s; } .gc-emoji img:nth-child(4) { animation-delay: .24s; } .gc-emoji img:nth-child(5) { animation-delay: .32s; }
+.gc-emoji span { width: 36px; height: 36px; border-radius: 11px; font-size: 19px !important; background: rgba(255,255,255,.95); display: grid; place-items: center; font-size: 24px; box-shadow: 0 4px 0 rgba(0,0,0,.18); animation: flip .6s cubic-bezier(.3,1.4,.5,1) both; }
+.gc-emoji span:nth-child(2) { animation-delay: .08s; } .gc-emoji span:nth-child(3) { animation-delay: .16s; } .gc-emoji span:nth-child(4) { animation-delay: .24s; } .gc-emoji span:nth-child(5) { animation-delay: .32s; }
+@keyframes floaty { 50% { translate: 0 -5px; } }
+
+/* ===== Shell game umum ===== */
+.gshell { display: grid; grid-template-columns: 1fr 260px; gap: 22px; padding-bottom: 48px; align-items: start; }
+.gbox { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 24px; box-shadow: var(--shadow); min-width: 0; }
+.ghud { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.ghud .qnum { font-size: 14px; }
+.combo { font-weight: 800; font-size: 14px; color: var(--orange); font-variant-numeric: tabular-nums; }
+.combo.bump { animation: bump .35s ease; }
+.opts.two { grid-template-columns: 1fr 1fr; }
+.opts.three { grid-template-columns: repeat(3, 1fr); }
+.opt.big { justify-content: center; text-align: center; font: 800 22px var(--display); padding: 18px 10px; letter-spacing: 0; }
+.opt.big b { display: none; }
+.intro { text-align: center; padding: 10px 0; }
+.intro img { width: 130px; height: auto; display: block; margin: 0 auto 8px; }
+.intro h3 { font-size: 26px; margin-bottom: 6px; }
+.intro p { color: var(--ink-2); margin: 0 auto 18px; max-width: 34em; }
+.intro ul { text-align: left; max-width: 360px; margin: 0 auto 20px; padding-left: 20px; color: var(--ink-2); font-size: 14.5px; }
+.endcard { text-align: center; }
+.endcard img { width: 140px; height: auto; display: block; margin: 0 auto 6px; animation: hop .7s cubic-bezier(.3,1.6,.5,1); }
+.endcard h3 { font-size: 28px; }
+.endcard .big { font: 800 56px/1 var(--display); color: var(--teal); margin: 10px 0 2px; font-variant-numeric: tabular-nums; }
+.endcard .stars-big { font-size: 28px; margin: 4px 0 6px; }
+.endcard p { color: var(--ink-2); margin: 4px 0 0; }
+.endcard .result-actions { margin-top: 18px; }
+
+/* Tebak ASEAN */
+.asean-q { font: 800 clamp(1.3rem, 3vw, 1.8rem)/1.3 var(--display); margin: 4px 0 18px; text-align: center; }
+.asean-q small { display: block; font: 700 13px var(--font); color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+
+/* Tata Surya */
+.space { background: #10172B; border-radius: 20px; padding: 18px 16px 16px; position: relative; overflow: hidden; }
+.space::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 70% 20%, #fff6 50%, transparent 51%), radial-gradient(1.5px 1.5px at 40% 80%, #fff7 50%, transparent 51%), radial-gradient(1px 1px at 85% 70%, #fff5 50%, transparent 51%), radial-gradient(1px 1px at 55% 50%, #fff4 50%, transparent 51%); }
+.space-row { position: relative; display: grid; grid-template-columns: 54px repeat(8, 1fr); gap: 6px; align-items: center; }
+.sun { width: 58px; height: 116px; background: no-repeat right center / auto 100%; filter: drop-shadow(0 0 18px rgba(255,170,60,.55)); margin-left: -16px; }
+.slot { aspect-ratio: 1; max-width: 100%; border-radius: 50%; border: 2px dashed rgba(245,241,232,.3); display: grid; place-items: center; position: relative; cursor: pointer; background: none; padding: 0; color: var(--chalk-2); font: 700 12px var(--font); transition: border-color .2s; }
+.slot.filled { border-color: transparent; }
+.slot.ok { border: 2px solid #7FD6A5; }
+.slot.no { border: 2px solid #F2A39B; animation: shake .4s; }
+.slot-num { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--chalk-2); }
+.planet { border-radius: 50%; position: relative; box-shadow: inset -4px -4px 8px rgba(0,0,0,.35); flex: none; }
+.pimg { display: block; height: auto; max-width: 118%; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); pointer-events: none; }
+.slot .pimg { animation: pop .35s cubic-bezier(.2,.8,.3,1.4) both; }
+.facts .pimg { width: 30px !important; max-width: 46px; flex: none; }
+.facts .pimg[style*='width:9'], .facts .pimg[style*='width:8'] { width: 46px !important; }
+.planet.ring::after { content: ''; position: absolute; left: -35%; right: -35%; top: 42%; height: 16%; border-radius: 50%; border: 2px solid rgba(240,220,160,.85); transform: rotate(-18deg); }
+.tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; min-height: 76px; }
+.pchip { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 10px 6px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; font-weight: 700; font-size: 12.5px; transition: transform .15s, border-color .15s; animation: pop .35s cubic-bezier(.2,.8,.3,1.4) both; }
+.pchip:hover { border-color: var(--ink); transform: translateY(-3px); }
+.pchip .planet-wrap { height: 52px; min-width: 52px; display: grid; place-items: center; }
+.pchip .pimg { max-height: 52px; width: auto !important; max-width: 70px; }
+.surya-hint { text-align: center; color: var(--ink-3); font-size: 13.5px; margin: 12px 0 0; }
+.facts { display: grid; gap: 8px; margin-top: 16px; text-align: left; }
+.facts div { display: flex; gap: 12px; align-items: center; padding: 8px 12px; border-radius: 12px; background: var(--tint); font-size: 14px; }
+.facts b { min-width: 86px; }
+
+/* Hitung Kilat */
+.timer { position: relative; height: 10px; border-radius: 999px; background: var(--tint); overflow: hidden; margin-bottom: 18px; }
+.timer i { position: absolute; inset: 0 auto 0 0; background: var(--orange); border-radius: 999px; transition: width .2s linear; }
+.timer.low i { background: var(--red); }
+.kq { font: 800 clamp(2rem, 6vw, 3rem)/1.15 var(--display); text-align: center; margin: 10px 0 22px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.kq.long { font-size: clamp(1.35rem, 3.4vw, 1.9rem); }
+.kq small { display: block; font: 700 15px/1.4 var(--font); color: var(--ink-2); letter-spacing: 0; margin-bottom: 6px; }
+.kscore { font: 800 15px var(--font); font-variant-numeric: tabular-nums; }
+.penalty { color: var(--red); font-weight: 800; animation: rise .3s ease both; }
+.kflash.ok { animation: flashOk .35s; } .kflash.no { animation: shake .35s; }
+@keyframes flashOk { 50% { background: var(--green-bg); } }
+
+/* Pasangkan Sila */
+.match { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.mitem { overflow: hidden; }
+.mitem span { min-width: 0; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
+.mcol { min-width: 0; display: grid; gap: 10px; align-content: start; }
+.mitem { display: flex; gap: 10px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; font-weight: 600; font-size: 14px; line-height: 1.35; min-height: 62px; transition: border-color .15s, background .15s, transform .15s; }
+.mitem:hover:not(:disabled) { border-color: var(--ink); }
+.mitem .no-badge { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--yellow); display: grid; place-items: center; font: 800 13px var(--display); }
+.mitem .emo { font-size: 22px; flex: none; }
+.mitem .sym-img { width: 40px; height: 40px; flex: none; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
+.mitem.sel { border-color: var(--orange); background: var(--orange-bg); transform: scale(1.02); }
+.mitem.done { border-color: var(--green); background: var(--green-bg); cursor: default; }
+.mitem.done .no-badge { background: var(--green); color: #fff; }
+.mitem.bad { border-color: var(--red); animation: shake .4s; }
+.round-tag { font-weight: 800; font-size: 14px; }
+
+@media (max-width: 960px) { .games { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) {
+  .gshell { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .games { grid-template-columns: 1fr; }
+  .gbox { padding: 18px 14px; }
+  .space-row { grid-template-columns: 34px repeat(4, 1fr); row-gap: 28px; }
+  .space-row .sun { grid-row: span 2; width: 34px; height: 150px; margin-left: -14px; }
+  .match { gap: 8px; }
+  .mitem { padding: 10px; font-size: 13px; }
+  .opts.three { grid-template-columns: 1fr; }
+  .opts.two { grid-template-columns: 1fr; }
+}
+
+
+/* ===== Koleksi lencana: medali bergambar Mipa ===== */
+.badges-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.badges-head h3 { font-size: 22px; margin: 0; }
+.badges-sub { margin: 4px 0 0; color: var(--ink-3); font-size: 14px; }
+.rank { display: flex; align-items: center; gap: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 10px 16px 10px 10px; box-shadow: var(--shadow); min-width: 280px; }
+.rank-ico { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--yellow); display: grid; place-items: center; font-size: 22px; flex: none; }
+.rank-txt { flex: 1; min-width: 0; }
+.rank-txt b { display: block; font: 800 16px var(--display); }
+.rank-txt small { display: block; color: var(--ink-3); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.rank-bar { height: 7px; border-radius: 999px; background: var(--tint); margin-top: 6px; overflow: hidden; }
+.rank-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--teal), #3FB5A6); transition: width .6s ease; }
+.rank-count { font: 800 22px var(--display); color: var(--teal); font-variant-numeric: tabular-nums; text-align: right; line-height: 1; }
+.rank-count small { display: block; font: 600 11px var(--font); color: var(--ink-3); margin-top: 3px; }
+
+.medals { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+.medal { --c1: #C98A4B; --c2: #F2C08A; --c3: #8E5A2B; position: relative; text-align: center; padding: 18px 12px 16px; border-radius: 20px; background: var(--paper); border: 1px solid var(--line); cursor: pointer; font: inherit; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform .2s cubic-bezier(.3,1.4,.5,1), box-shadow .2s; }
+.medal:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.medal.silver { --c1: #A7B1C2; --c2: #E9EEF5; --c3: #6E7A8E; }
+.medal.gold { --c1: #E7B43A; --c2: #FFE58A; --c3: #A9741A; }
+.medal-disc { position: relative; width: 104px; height: 104px; margin-bottom: 26px; }
+.medal-ribbon { position: absolute; left: 50%; bottom: -22px; width: 56px; height: 40px; transform: translateX(-50%); z-index: 0; }
+.medal-ribbon::before, .medal-ribbon::after { content: ''; position: absolute; bottom: 0; width: 24px; height: 40px; background: var(--teal); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%); }
+.medal-ribbon::before { left: 2px; transform: rotate(12deg); }
+.medal-ribbon::after { right: 2px; transform: rotate(-12deg); background: var(--orange); }
+.medal-ring { position: absolute; inset: 0; border-radius: 50%; z-index: 1; background: conic-gradient(from 200deg, var(--c1), var(--c2), var(--c1), var(--c3), var(--c1), var(--c2), var(--c1)); box-shadow: 0 6px 14px -6px rgba(21,35,63,.45), inset 0 0 0 2px rgba(255,255,255,.35); }
+.medal-face { position: absolute; z-index: 2; inset: 8px; border-radius: 50%; overflow: hidden; background: radial-gradient(circle at 50% 30%, #FFFFFF, #F3EDE2 70%); box-shadow: inset 0 2px 6px rgba(21,35,63,.18); display: grid; place-items: center; }
+.medal-face img { width: 92%; height: auto; margin-top: 10%; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.medal:hover .medal-face img { transform: translateY(-4px) scale(1.04); }
+.medal-face::after { content: ''; position: absolute; inset: -30%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.75) 50%, transparent 60%); transform: translateX(-120%); }
+.medal.on .medal-face::after { animation: shine 3.6s ease-in-out infinite; }
+.medal.on:nth-child(2n) .medal-face::after { animation-delay: 1.2s; }
+.medal.on:nth-child(3n) .medal-face::after { animation-delay: 2.1s; }
+@keyframes shine { 0%, 60% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.medal-tier { position: absolute; top: -4px; right: -4px; z-index: 4; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; background: var(--c1); color: #fff; padding: 3px 7px; border-radius: 999px; box-shadow: 0 2px 0 var(--c3); }
+.medal-name { font: 800 15px/1.25 var(--display); }
+.medal-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
+.medal-prog { width: 100%; margin-top: 8px; }
+.medal-prog .bar { height: 6px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+.medal-prog .bar i { display: block; height: 100%; background: var(--orange); border-radius: 999px; }
+.medal-prog small { display: block; margin-top: 4px; font-size: 11.5px; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.medal-done { margin-top: 8px; font-size: 12px; font-weight: 800; color: var(--green); }
+/* terkunci: siluet */
+.medal.locked .medal-ring { background: conic-gradient(#DCD5C8, #EFEAE1, #DCD5C8, #CFC7B8, #DCD5C8); }
+.medal.locked .medal-face img { filter: brightness(0) opacity(.22); }
+.medal.locked .medal-lock { top: auto; bottom: 4px; transform: translateX(-50%); width: 28px; height: 28px; font-size: 13px; }
+.medal.locked .medal-ribbon::before, .medal.locked .medal-ribbon::after { background: #D9D1C2; }
+.medal.locked .medal-tier { background: #B9B0A0; box-shadow: 0 2px 0 #968C7B; }
+.medal.locked .medal-name { color: var(--ink-2); }
+.medal-lock { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 34px; height: 34px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; font-size: 16px; box-shadow: 0 3px 8px rgba(21,35,63,.2); }
+.medal.new { animation: pop .6s cubic-bezier(.2,.8,.3,1.4); }
+
+/* Pop-up lencana */
+.award { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: rgba(10,17,33,.72); backdrop-filter: blur(4px); animation: fade .25s ease both; }
+.award-card { position: relative; width: min(380px, 100%); background: var(--paper); border-radius: 28px; padding: 26px 22px 22px; text-align: center; overflow: hidden; animation: pop .45s cubic-bezier(.2,.8,.3,1.25) both; box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+.award-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 190px; background: radial-gradient(circle at 50% 100%, rgba(255,212,92,.55), transparent 65%), linear-gradient(180deg, var(--ink), #24386A); }
+.award-card.is-locked::before { background: linear-gradient(180deg, #E8E1D4, #F3EDE2); }
+.confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.award-kicker { position: relative; z-index: 1; margin: 0 0 12px; font: 800 13px var(--font); letter-spacing: .12em; text-transform: uppercase; color: var(--yellow); }
+.award-card.is-locked .award-kicker { color: var(--ink-2); }
+.award-medal { position: relative; z-index: 1; display: flex; justify-content: center; margin-bottom: 14px; }
+.award-medal .medal { cursor: default; background: none; border: 0; padding: 0; }
+.award-medal .medal:hover { transform: none; box-shadow: none; }
+.award-medal .medal-disc { width: 148px; height: 148px; animation: spinIn .9s cubic-bezier(.2,.8,.25,1.1) both; }
+.award-card.is-locked .award-medal .medal-disc { animation: none; }
+@keyframes spinIn { 0% { transform: rotateY(540deg) scale(.4); opacity: 0; } 100% { transform: none; opacity: 1; } }
+.award-card h3 { position: relative; z-index: 1; font-size: 26px; margin: 4px 0 6px; }
+.award-desc { position: relative; z-index: 1; margin: 0 0 18px; color: var(--ink-2); font-size: 15px; }
+.award-actions { position: relative; z-index: 4; display: grid; gap: 10px; }
+.award-actions .btn { width: 100%; }
+
+@media (max-width: 640px) {
+  .medals { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .medal { padding: 14px 8px 12px; }
+  .medal-disc { width: 84px; height: 84px; margin-bottom: 22px; }
+  .medal-ribbon { bottom: -18px; width: 46px; height: 32px; }
+  .medal-ribbon::before, .medal-ribbon::after { width: 20px; height: 32px; }
+  .medal-name { font-size: 14px; }
+  .rank { min-width: 0; width: 100%; }
+}
+
+/* Nama panggilan */
+.name-link { margin-top: 12px; background: none; border: 0; padding: 0; color: var(--teal); font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.name-link:hover { color: var(--ink); }
+.name-card::before { height: 130px; }
+.name-mipa { position: relative; z-index: 1; width: 120px; height: auto; display: block; margin: -4px auto 8px; animation: hop .7s cubic-bezier(.3,1.6,.5,1); }
+.name-input { position: relative; z-index: 1; width: 100%; font: 700 18px var(--font); color: var(--ink); text-align: center; padding: 13px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); margin-bottom: 8px; }
+.name-input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 4px rgba(15,110,102,.15); }
+.name-err { margin: 0 0 10px; color: var(--red); font-size: 13.5px; font-weight: 600; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Bagikan */
+.ico-share { width: 18px; height: 18px; fill: currentColor; }
+.sheet-wrap { align-items: end; z-index: 60; }
+.sheet-wrap .share-card { border-radius: 26px 26px 26px 26px; padding: 12px 18px 18px; text-align: left; }
+.sheet-wrap .share-card::before { display: none; }
+@media (max-width: 640px) { .sheet-wrap { padding: 0; } .sheet-wrap .share-card { width: 100%; border-radius: 24px 24px 0 0; padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); animation: sheetUp .3s cubic-bezier(.2,.8,.3,1) both; } }
+@media (min-width: 641px) { .sheet-wrap { align-items: center; } }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+.sheet-grip { display: block; width: 42px; height: 5px; border-radius: 99px; background: var(--line); margin: 0 auto 10px; }
+.share-title { text-align: center; font-size: 18px; margin: 0 0 14px; }
+.share-row { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 16px; background: var(--tint); margin-bottom: 16px; }
+.share-thumb { width: 64px; height: 80px; object-fit: cover; border-radius: 10px; flex: none; box-shadow: 0 4px 10px -4px rgba(21,35,63,.4); }
+.share-meta { flex: 1; min-width: 0; }
+.share-meta b { display: block; font-size: 14.5px; }
+.share-meta small { color: var(--ink-3); font-size: 12.5px; }
+.share-copy { width: 40px; height: 40px; border-radius: 12px; border: 0; background: var(--paper); font-size: 18px; cursor: pointer; color: var(--teal); flex: none; }
+.share-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 8px; margin-bottom: 12px; }
+.share-app { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--ink); font: 600 12.5px var(--font); background: none; border: 0; cursor: pointer; padding: 4px; border-radius: 12px; }
+.share-app:hover { background: var(--tint); }
+.share-app span { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; font: 800 18px var(--display); box-shadow: 0 4px 10px -4px rgba(0,0,0,.35); }
+.share-hint { margin: 0 0 12px; font-size: 12.5px; color: var(--ink-3); text-align: center; }
+.share-close { width: 100%; }
+/* Bagikan sebagai gambar (lama) */
+.share-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.share-btns .btn { flex: 1 1 auto; }
+.text-btn { background: none; border: 0; color: var(--ink-3); font-weight: 700; font-size: 13.5px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; padding: 4px; }
+.text-btn:hover { color: var(--ink); }
+.share-card { width: min(420px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; }
+.share-card::before { height: 80px; }
+.share-kicker { margin-bottom: 14px; }
+.share-img { position: relative; z-index: 1; display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 12px 30px -12px rgba(21,35,63,.5); margin-bottom: 12px; -webkit-touch-callout: default; }
+.share-hint { position: relative; z-index: 1; margin: 0 0 14px; font-size: 13.5px; color: var(--ink-2); }
+/* Profil di header */
+.profile { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; border: 2px solid var(--line); background: var(--paper); cursor: pointer; font: 700 14px var(--font); color: var(--ink); max-width: 180px; transition: border-color .15s, background .15s; }
+.profile:hover { border-color: var(--ink); }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--teal); color: #fff; display: grid; place-items: center; font: 800 14px var(--display); flex: none; text-transform: uppercase; }
+.profile.empty .avatar { background: var(--tint); color: var(--ink-3); }
+.pname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pedit { width: 15px; height: 15px; fill: var(--ink-3); flex: none; }
+.profile.bump { animation: bump .45s ease; }
+@media (max-width: 640px) { .profile { padding: 3px; gap: 0; border-width: 2px; } .pname, .pedit { display: none; } .avatar { width: 30px; height: 30px; } .stats { gap: 6px; } }
+@media (max-width: 380px) { .brand { font-size: 15px; gap: 6px; } .brand-logo { width: 32px; height: 32px; } .pill { padding: 5px 7px; gap: 4px; font-size: 12.5px; } .stats { gap: 4px; } .avatar { width: 28px; height: 28px; } .top-in { gap: 6px; } }
+@media (max-width: 400px) { .brand-text { display: none; } .brand-logo { width: 42px; height: 42px; } }
+.back-site { display: inline-block; margin-bottom: 14px; font-weight: 700; font-size: 14px; color: var(--ink-2); text-decoration: none; }
+.back-site:hover { color: var(--teal); }
+[hidden] { display: none !important; }
+
+@keyframes bump { 40% { transform: scale(1.2); } }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes flip { from { transform: rotateX(90deg); } to { transform: none; } }
+@keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+@keyframes hop { 35% { transform: translateY(-14px) rotate(-3deg); } 70% { transform: translateY(0) scaleY(.95); } }
+@keyframes sway { 50% { transform: rotate(-2.5deg) translateY(-3px); } }
+@keyframes roll { 0% { left: 20px; } 85%, 100% { left: calc(100% - 196px); } }
+.view-enter { animation: rise .35s ease both; }
+
+@media (max-width: 860px) {
+  .quiz, .lab { grid-template-columns: 1fr; }
+  .side { position: static; display: flex; align-items: center; gap: 14px; text-align: left; padding: 14px 16px; }
+  .side img { width: 72px; margin: 0; }
+  .side .score { font-size: 30px; margin: 0 0 0 auto; }
+}
+@media (max-width: 640px) {
+  .games { grid-template-columns: 1fr; }
+  .hub-hero { grid-template-columns: 1fr; padding-block: 24px 16px; }
+  .hub-mipa { display: none; }
+  .stats .pill .lbl { display: none; }
+  .qcard { padding: 20px 16px; }
+  canvas { height: 230px; }
+  .readout b { font-size: 17px; }
+}
+@media (max-width: 480px) {
+  .brand { font-size: 17px; gap: 8px; white-space: nowrap; }
+  .brand-logo { width: 40px; height: 40px; }
+  .top-in { height: 58px; }
+  .pill { padding: 6px 10px; font-size: 13px; }
+  .screen-head h2 { font-size: 1.25rem; }
+  .match.sym { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .match { gap: 8px; }
+  .mcol { gap: 8px; }
+  .mitem { padding: 9px 10px; gap: 8px; font-size: 12.5px; min-height: 54px; border-radius: 12px; }
+  .mitem .no-badge { width: 22px; height: 22px; font-size: 11.5px; }
+  .mitem .sym-img { width: 32px; height: 32px; border-radius: 8px; }
+  .gbox { padding: 16px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+
+
+<header class="top">
+  <div class="wrap top-in">
+    <button class="brand" id="home-btn" type="button" aria-label="Kembali ke Arena"><img class="brand-logo" src="arena-assets/arena-logo.webp" alt="" width="48" height="48"><span class="brand-text">Arena MIPAS</span></button>
+    <div class="stats">
+      <span class="pill" id="pill-streak" title="Hari berturut-turut ikut Tantangan Harian"><span class="ico">🔥</span><b id="streak">0</b><span class="lbl">hari</span></span>
+      <span class="pill" id="pill-xp" title="Poin pengalaman"><span class="ico">⭐</span><b id="xp">0</b><span class="lbl">XP</span></span>
+      <button type="button" class="profile" id="profile-btn" aria-label="Atur nama panggilan"><span class="avatar" id="avatar">?</span><span class="pname" id="pname">Isi nama</span><svg class="pedit" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17.3V20h2.7l8-8-2.7-2.7-8 8zM19.7 7a1 1 0 0 0 0-1.4l-1.3-1.3a1 1 0 0 0-1.4 0l-1.1 1.1 2.7 2.7L19.7 7z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HUB -->
+  <section id="view-hub" class="view-enter">
+    <div class="wrap hub-hero">
+      <div>
+        <a class="back-site" href="/">← Kembali ke video MIPAS</a>
+        <p class="eyebrow" id="hello">#TemanBelajarMIPAS</p>
+        <h1>Main sambil belajar bareng Mipa</h1>
+        <p class="lead">Ada 6 game dari materi MIPAS Channel. Kumpulkan XP dan lencana. Salah? Tidak apa-apa, Mipa langsung kasih video penjelasannya.</p>
+      </div>
+      <img class="hub-mipa" data-m="celebrate" alt="" width="235" height="240">
+    </div>
+
+    <div class="wrap games">
+      <button class="game-card" type="button" data-open="daily">
+        <span class="gc-status" id="daily-status">Belum dimainkan hari ini</span>
+        <div class="gc-art daily" aria-hidden="true">
+          <div class="gc-tiles"><span class="ok">✓</span><span class="ok">✓</span><span class="no">✗</span><span class="ok">✓</span><span>?</span></div>
+          <img data-m="explore" alt="" width="201" height="240">
+        </div>
+        <div class="gc-body">
+          <h2>Tantangan Harian</h2>
+          <p>5 soal campuran setiap hari. Jaga 🔥 streak-mu dan bagikan hasilnya ke grup kelas.</p>
+          <div class="gc-meta"><span class="tag teal">Semua mapel</span><span class="tag">± 3 menit</span><span class="tag">Soal baru tiap hari</span></div>
+          <span class="gc-cta">Mulai tantangan</span>
+        </div>
+      </button>
+
+      <button class="game-card" type="button" data-open="glbb">
+        <span class="gc-status" id="glbb-status">0 / 15 ⭐</span>
+        <div class="gc-art glbb" aria-hidden="true">
+          <span class="gc-formula">s = v₀t + ½at²</span>
+          <div class="gc-track"></div><div class="gc-flag"></div><div class="gc-cart"></div>
+          <img data-m="scientist" alt="" width="235" height="240">
+        </div>
+        <div class="gc-body">
+          <h2>Luncurkan Troli GLBB</h2>
+          <p>Atur kecepatan awal dan percepatan supaya troli berhenti tepat di bendera. 5 level, dari GLB sampai perlambatan.</p>
+          <div class="gc-meta"><span class="tag orange">IPA Kelas 8</span><span class="tag">Gerak lurus</span><span class="tag">5 level</span></div>
+          <span class="gc-cta">Mulai eksperimen</span>
+        </div>
+      </button>
+
+      <button class="game-card" type="button" data-open="asean">
+        <span class="gc-status" id="asean-status">Belum dimainkan</span>
+        <div class="gc-art asean" aria-hidden="true">
+          <div class="gc-chips"><span>Hanoi?</span><span class="hit">Manila ✓</span><span>Dili?</span></div>
+          <img data-m="explorer" alt="" width="191" height="240">
+        </div>
+        <div class="gc-body">
+          <h2>Tebak Negara ASEAN</h2>
+          <p>10 soal kilat tentang ibu kota, mata uang, dan fakta 11 negara ASEAN.</p>
+          <div class="gc-meta"><span class="tag" style="background:#E0E9F8;color:#2E5AAC">IPS Kelas 8</span><span class="tag">10 soal</span></div>
+          <span class="gc-cta">Mulai menebak</span>
+        </div>
+      </button>
+
+      <button class="game-card" type="button" data-open="surya">
+        <span class="gc-status" id="surya-status">0 / 3 ⭐</span>
+        <div class="gc-art surya" aria-hidden="true">
+          <div class="gc-orbit"><span class="sun" data-p="sun"></span>
+            <img data-p="merkurius" alt="" style="left:80px;width:14px">
+            <img data-p="venus" alt="" style="left:102px;width:20px;animation-delay:.3s">
+            <img data-p="bumi" alt="" style="left:130px;width:21px;animation-delay:.6s">
+            <img data-p="mars" alt="" style="left:158px;width:17px;animation-delay:.9s">
+            <img data-p="jupiter" alt="" style="left:184px;width:38px;animation-delay:1.2s">
+          </div>
+          <img data-m="astronaut" alt="" width="201" height="240">
+        </div>
+        <div class="gc-body">
+          <h2>Susun Tata Surya</h2>
+          <p>Susun 8 planet dari yang terdekat sampai terjauh dari Matahari, lalu kenali faktanya.</p>
+          <div class="gc-meta"><span class="tag teal">IPAS Kelas 6</span><span class="tag">8 planet</span></div>
+          <span class="gc-cta">Mulai menyusun</span>
+        </div>
+      </button>
+
+      <button class="game-card" type="button" data-open="kilat">
+        <span class="gc-status" id="kilat-status">Belum ada rekor</span>
+        <div class="gc-art kilat" aria-hidden="true">
+          <div class="gc-kilat"><small>Berapa hasilnya?</small>7 × 8 = ?</div>
+          <img data-m="stopwatch" alt="" width="200" height="207">
+        </div>
+        <div class="gc-body">
+          <h2>Hitung Kilat</h2>
+          <p>Jawab soal hitungan sebanyak mungkin dalam 60 detik: bilangan, perkalian, pecahan, dan rasio.</p>
+          <div class="gc-meta"><span class="tag orange">Matematika SD</span><span class="tag">60 detik</span></div>
+          <span class="gc-cta">Mulai hitung</span>
+        </div>
+      </button>
+
+      <button class="game-card" type="button" data-open="sila">
+        <span class="gc-status" id="sila-status">0 / 3 ⭐</span>
+        <div class="gc-art sila" aria-hidden="true">
+          <div class="gc-emoji"><img data-s="bintang" alt=""><img data-s="rantai" alt=""><img data-s="beringin" alt=""><img data-s="banteng" alt=""><img data-s="padi" alt=""></div>
+          <img data-m="merahputih" alt="" width="199" height="240">
+        </div>
+        <div class="gc-body">
+          <h2>Pasangkan Sila</h2>
+          <p>Cocokkan kelima sila dengan lambangnya, lalu dengan contoh sikap sehari-hari.</p>
+          <div class="gc-meta"><span class="tag" style="background:#F8E0DE;color:#B83A3A">Pendidikan Pancasila</span><span class="tag">2 babak</span></div>
+          <span class="gc-cta">Mulai mencocokkan</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="wrap badges">
+      <div class="badges-head">
+        <div>
+          <h3>Koleksi Lencana Mipa</h3>
+          <p class="badges-sub">Ketuk medali untuk melihat cara mendapatkannya.</p>
+        </div>
+        <div class="rank" id="rank"></div>
+      </div>
+      <div class="medals" id="badges"></div>
+    </div>
+  </section>
+
+  <!-- DAILY -->
+  <section id="view-daily" hidden>
+    <div class="wrap screen-head">
+      <button class="back" type="button" data-home>← Arena</button>
+      <h2>Tantangan Harian · <span id="daily-date"></span></h2>
+    </div>
+    <div class="wrap quiz">
+      <div class="qcard" id="qcard"></div>
+      <aside class="side" id="side">
+        <img id="side-mipa" data-m="thinking" alt="" width="191" height="240">
+        <div>
+          <strong id="side-title">Semangat!</strong>
+          <p id="side-text">Baca soalnya pelan-pelan, ya.</p>
+        </div>
+        <div class="score"><span id="side-score">0</span>/5</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- GLBB -->
+  <section id="view-glbb" hidden>
+    <div class="wrap screen-head">
+      <button class="back" type="button" data-home>← Arena</button>
+      <h2>Luncurkan Troli GLBB</h2>
+    </div>
+    <div class="wrap lab">
+      <div class="board">
+        <div class="board-in">
+          <div class="levelbar">
+            <div class="levels" id="levels"></div>
+            <div class="mission" id="mission"></div>
+          </div>
+          <canvas id="cv" aria-label="Lintasan troli"></canvas>
+          <div class="readout">
+            <div>Waktu<b id="r-t">0,0 s</b></div>
+            <div>Kecepatan<b id="r-v">0,0 m/s</b></div>
+            <div>Jarak<b id="r-s">0,0 m</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ctrl" id="ctrl-v0">
+          <label for="in-v0">Kecepatan awal v₀ <span id="v0-val">0 m/s</span></label>
+          <input type="range" id="in-v0" min="0" max="15" step="0.5" value="0">
+          <small>Seberapa cepat troli saat mulai bergerak.</small>
+        </div>
+        <div class="ctrl" id="ctrl-a">
+          <label for="in-a">Percepatan a <span id="a-val">0 m/s²</span></label>
+          <input type="range" id="in-a" min="-4" max="5" step="0.5" value="0">
+          <small>Positif = makin cepat, negatif = direm (perlambatan).</small>
+        </div>
+        <div class="formula">
+          Rumus jarak setelah <b id="f-t">4</b> detik:
+          <code id="f-line"></code>
+        </div>
+        <div class="lab-actions">
+          <button class="btn btn-primary" id="launch" type="button">Luncurkan ▶</button>
+          <button class="btn btn-ghost" id="reset" type="button">Ulang</button>
+        </div>
+        <div class="lab-msg">
+          <img id="lab-mipa" data-m="scientist" alt="" width="191" height="240">
+          <p id="lab-text"><strong>Siap, Ilmuwan?</strong>Hitung dulu pakai rumus, baru luncurkan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME GENERIK: ASEAN, SURYA, KILAT, SILA -->
+  <section id="view-asean" hidden>
+    <div class="wrap screen-head"><button class="back" type="button" data-home>← Arena</button><h2>Tebak Negara ASEAN</h2></div>
+    <div class="wrap gshell"><div class="gbox" id="asean-box"></div>
+      <aside class="side"><img id="asean-mipa" data-m="explorer" alt="" width="191" height="240"><div><strong id="asean-st">Siap menjelajah?</strong><p id="asean-sp">Ada 11 negara anggota ASEAN, termasuk Timor-Leste yang bergabung tahun 2025.</p></div><div class="score"><span id="asean-sc">0</span>/10</div></aside>
+    </div>
+  </section>
+  <section id="view-surya" hidden>
+    <div class="wrap screen-head"><button class="back" type="button" data-home>← Arena</button><h2>Susun Tata Surya</h2></div>
+    <div class="wrap gshell"><div class="gbox" id="surya-box"></div>
+      <aside class="side"><img id="surya-mipa" data-m="astronaut" alt="" width="201" height="240"><div><strong id="surya-st">Ayo jadi astronom!</strong><p id="surya-sp">Ketuk planet untuk menaruhnya di orbit berikutnya. Ketuk lagi untuk mengembalikan.</p></div><div class="score"><span id="surya-sc">0</span>/8</div></aside>
+    </div>
+  </section>
+  <section id="view-kilat" hidden>
+    <div class="wrap screen-head"><button class="back" type="button" data-home>← Arena</button><h2>Hitung Kilat</h2></div>
+    <div class="wrap gshell"><div class="gbox" id="kilat-box"></div>
+      <aside class="side"><img id="kilat-mipa" data-m="stopwatch" alt="" width="235" height="240"><div><strong id="kilat-st">60 detik!</strong><p id="kilat-sp">Jawaban salah mengurangi waktu 2 detik. Bisa pakai tombol 1, 2, 3 di keyboard.</p></div><div class="score"><span id="kilat-sc">0</span></div></aside>
+    </div>
+  </section>
+  <section id="view-sila" hidden>
+    <div class="wrap screen-head"><button class="back" type="button" data-home>← Arena</button><h2>Pasangkan Sila</h2></div>
+    <div class="wrap gshell"><div class="gbox" id="sila-box"></div>
+      <aside class="side"><img id="sila-mipa" data-m="merahputih" alt="" width="199" height="240"><div><strong id="sila-st">Kenali Pancasila</strong><p id="sila-sp">Ketuk satu sila di kiri, lalu pasangannya di kanan.</p></div><div class="score"><span id="sila-sc">0</span>/10</div></aside>
+    </div>
+  </section>
+</main>
+
+<div class="award" id="namebox" hidden>
+  <form class="award-card name-card" id="name-form" autocomplete="off">
+    <img class="name-mipa" data-m="success" alt="" width="199" height="240">
+    <h3>Mau dipanggil siapa?</h3>
+    <p class="award-desc">Nama panggilan dipakai Mipa untuk menyapamu dan di teks yang kamu bagikan. Nama ini hanya tersimpan di perangkat ini.</p>
+    <label class="sr-only" for="name-input">Nama panggilan</label>
+    <input class="name-input" id="name-input" type="text" maxlength="20" placeholder="Contoh: Dina" enterkeyhint="done">
+    <p class="name-err" id="name-err" hidden>Tulis nama panggilan dulu, ya.</p>
+    <div class="award-actions">
+      <button type="submit" class="btn btn-primary">Simpan</button>
+      <button type="button" class="btn btn-ghost" id="name-skip">Nanti saja</button>
+    </div>
+  </form>
+</div>
+
+<div class="award sheet-wrap" id="sharebox" hidden>
+  <div class="award-card share-card" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <span class="sheet-grip" aria-hidden="true"></span>
+    <h3 id="share-title" class="share-title">Bagikan</h3>
+    <div class="share-row">
+      <img class="share-thumb" id="share-preview" alt="">
+      <div class="share-meta"><b id="share-name">Hasil Arena MIPAS</b><small>mipas.vercel.app/arena</small></div>
+      <button type="button" class="share-copy" id="share-copy" aria-label="Salin teks">⧉</button>
+    </div>
+    <div class="share-grid">
+      <a class="share-app" id="sh-wa" target="_blank" rel="noopener"><span style="background:#25D366">WA</span>WhatsApp</a>
+      <a class="share-app" id="sh-tg" target="_blank" rel="noopener"><span style="background:#229ED9">TG</span>Telegram</a>
+      <a class="share-app" id="sh-fb" target="_blank" rel="noopener"><span style="background:#1877F2">f</span>Facebook</a>
+      <a class="share-app" id="sh-x" target="_blank" rel="noopener"><span style="background:#111">X</span>X</a>
+      <button type="button" class="share-app" id="sh-copy2"><span style="background:#4A5672">⧉</span>Salin teks</button>
+      <a class="share-app" id="share-dl" download><span style="background:#0F6E66">↓</span>Simpan gambar</a>
+    </div>
+    <p class="share-hint">Untuk Instagram atau Story: simpan gambarnya dulu, lalu unggah dari galeri.</p>
+    <button type="button" class="btn btn-ghost share-close" id="share-close">Tutup</button>
+  </div>
+</div>
+
+<div class="award" id="award" hidden>
+  <div class="award-card" role="dialog" aria-modal="true" aria-labelledby="award-name">
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+    <p class="award-kicker" id="award-kicker">Lencana baru!</p>
+    <div class="award-medal" id="award-medal"></div>
+    <h3 id="award-name"></h3>
+    <p class="award-desc" id="award-desc"></p>
+    <div class="award-actions" id="award-actions"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const PL = {"sun": {"src": "arena-assets/planet-sun.webp", "w": 220, "h": 217}, "merkurius": {"src": "arena-assets/planet-merkurius.webp", "w": 216, "h": 220}, "venus": {"src": "arena-assets/planet-venus.webp", "w": 218, "h": 220}, "bumi": {"src": "arena-assets/planet-bumi.webp", "w": 220, "h": 217}, "mars": {"src": "arena-assets/planet-mars.webp", "w": 220, "h": 219}, "jupiter": {"src": "arena-assets/planet-jupiter.webp", "w": 220, "h": 220}, "saturnus": {"src": "arena-assets/planet-saturnus.webp", "w": 220, "h": 117}, "uranus": {"src": "arena-assets/planet-uranus.webp", "w": 140, "h": 220}, "neptunus": {"src": "arena-assets/planet-neptunus.webp", "w": 220, "h": 220}};
+  const SL = {"bintang": "arena-assets/sila-bintang.webp", "rantai": "arena-assets/sila-rantai.webp", "beringin": "arena-assets/sila-beringin.webp", "banteng": "arena-assets/sila-banteng.webp", "padi": "arena-assets/sila-padi.webp"};
+  const LOGO = 'arena-assets/arena-logo.webp';
+  const M = { explore: 'arena-assets/mipa-explore.webp', merahputih: 'arena-assets/mipa-merahputih.webp', success: 'arena-assets/mipa-success.webp', celebrate: 'arena-assets/mipa-celebrate.webp', thinking: 'arena-assets/mipa-thinking.webp', oops: 'arena-assets/mipa-oops.webp', scientist: 'arena-assets/mipa-scientist.webp', explorer: 'arena-assets/mipa-explorer.webp', astronaut: 'arena-assets/mipa-astronaut.webp', stopwatch: 'arena-assets/mipa-stopwatch.webp' };
+  const $ = (s) => document.querySelector(s);
+  document.querySelectorAll('img[data-m]').forEach((i) => (i.src = M[i.dataset.m]));
+  document.querySelectorAll('img[data-s]').forEach((i) => (i.src = SL[i.dataset.s]));
+  document.querySelectorAll('[data-p]').forEach((el) => { const src = PL[el.dataset.p].src; if (el.tagName === 'IMG') el.src = src; else el.style.backgroundImage = `url(${src})`; });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt = (n, d = 1) => n.toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const fmtN = (n) => Number.isInteger(n) ? String(n).replace('-', '−') : fmt(n, 1).replace('-', '−');
+  const yt = (id) => `/?v=${encodeURIComponent(id)}`;
+
+  /* ---------- Penyimpanan per perangkat ---------- */
+  const KEY = 'mipas-arena-v1';
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+  let S = Object.assign({ xp: 0, streak: 0, lastDay: '', daily: {}, glbb: {}, badges: [], best: {}, name: '', nameAsked: false }, load());
+  S.best = S.best || {};
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+
+  const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  const dayDiff = (a, b) => Math.round((new Date(b) - new Date(a)) / 864e5);
+
+  function toast(msg) {
+    const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+    document.body.appendChild(t); setTimeout(() => t.remove(), 2200);
+  }
+  function bumpPill(id) { const p = $(id); p.classList.remove('bump'); void p.offsetWidth; p.classList.add('bump'); }
+  function addXP(n) { S.xp += n; save(); renderStats(); bumpPill('#pill-xp'); }
+  function renderStats() {
+    const alive = S.lastDay && dayDiff(S.lastDay, today()) <= 1;
+    $('#streak').textContent = alive ? S.streak : 0;
+    $('#xp').textContent = S.xp;
+  }
+
+  /* ---------- Lencana ---------- */
+  const doneDays = () => Object.values(S.daily).filter((d) => d && d.done).length;
+  const bestDaily = () => Math.max(0, ...Object.values(S.daily).filter((d) => d && d.done).map((d) => d.score));
+  const curStreak = () => (S.lastDay && dayDiff(S.lastDay, today()) <= 1 ? S.streak : 0);
+  const BADGES = [
+    { id: 'first', m: 'success', tier: 'bronze', name: 'Langkah Pertama', desc: 'Selesaikan 1 tantangan harian.', prog: () => [Math.min(doneDays(), 1), 1, 'tantangan'] },
+    { id: 'glb', m: 'scientist', tier: 'bronze', name: 'Pengemudi GLB', desc: 'Lulus level 1 dan 2 di Troli GLBB.', prog: () => [((S.glbb[0] || 0) > 0) + ((S.glbb[1] || 0) > 0), 2, 'level'] },
+    { id: 'streak3', m: 'explore', tier: 'silver', name: 'Rajin 3 Hari', desc: 'Ikut tantangan harian 3 hari berturut-turut.', prog: () => [Math.min(curStreak(), 3), 3, 'hari'] },
+    { id: 'asean', m: 'explorer', tier: 'silver', name: 'Penjelajah ASEAN', desc: 'Skor minimal 8 dari 10 di Tebak Negara ASEAN.', prog: () => [Math.min(S.best.asean || 0, 8), 8, 'benar'] },
+    { id: 'sila', m: 'merahputih', tier: 'silver', name: 'Sahabat Pancasila', desc: 'Selesaikan Pasangkan Sila dengan maksimal 1 kali salah.', prog: () => [S.best.sila || 0, 3, '⭐'] },
+    { id: 'perfect', m: 'celebrate', tier: 'gold', name: 'Sempurna', desc: 'Jawab benar 5 dari 5 soal tantangan harian.', prog: () => [bestDaily(), 5, 'benar'] },
+    { id: 'astro', m: 'astronaut', tier: 'gold', name: 'Astronom Cilik', desc: 'Susun tata surya dengan benar pada percobaan pertama.', prog: () => [S.best.surya || 0, 3, '⭐'] },
+    { id: 'kilat', m: 'stopwatch', tier: 'gold', name: 'Kalkulator Kilat', desc: '15 jawaban benar dalam 60 detik di Hitung Kilat.', prog: () => [Math.min(S.best.kilat || 0, 15), 15, 'benar'] },
+    { id: 'glbbpro', m: 'scientist', tier: 'gold', name: 'Ahli GLBB', desc: 'Raih minimal ⭐⭐ di semua 5 level Troli GLBB.', prog: () => [LEVELS.filter((_, i) => (S.glbb[i] || 0) >= 2).length, 5, 'level'] },
+  ];
+  const TIER = { bronze: 'Perunggu', silver: 'Perak', gold: 'Emas' };
+  const RANKS = [
+    { xp: 0, ico: '🌱', name: 'Pemula' },
+    { xp: 50, ico: '📘', name: 'Pelajar Rajin' },
+    { xp: 150, ico: '⭐', name: 'Bintang Kelas' },
+    { xp: 300, ico: '🏆', name: 'Juara MIPAS' },
+  ];
+
+  function medalHTML(b, opts = {}) {
+    const on = S.badges.includes(b.id);
+    const [cur, max, unit] = b.prog();
+    const pct = Math.round((Math.min(cur, max) / max) * 100);
+    const tag = opts.tag || 'button';
+    return `<${tag} ${tag === 'button' ? 'type="button"' : ''} class="medal ${b.tier} ${on ? 'on' : 'locked'} ${opts.cls || ''}" data-b="${b.id}" aria-label="${b.name}${on ? ', sudah diraih' : ', belum diraih'}">
+      <div class="medal-disc">
+        <span class="medal-ribbon"></span>
+        <span class="medal-ring"></span>
+        <span class="medal-face"><img src="${M[b.m]}" alt=""></span>
+        ${on ? '' : '<span class="medal-lock">🔒</span>'}
+        <span class="medal-tier">${TIER[b.tier]}</span>
+      </div>
+      ${opts.compact ? '' : `<div class="medal-name">${b.name}</div>
+      ${on ? '<div class="medal-done">✓ Sudah diraih</div>' : `<div class="medal-prog"><div class="bar"><i style="width:${pct}%"></i></div><small>${cur}/${max} ${unit}</small></div>`}`}
+    </${tag}>`;
+  }
+
+  function renderRank() {
+    const xp = S.xp;
+    let r = 0; RANKS.forEach((x, i) => { if (xp >= x.xp) r = i; });
+    const cur = RANKS[r], next = RANKS[r + 1];
+    const pct = next ? Math.round(((xp - cur.xp) / (next.xp - cur.xp)) * 100) : 100;
+    $('#rank').innerHTML = `
+      <span class="rank-ico">${cur.ico}</span>
+      <div class="rank-txt"><b>${cur.name}</b><small>${next ? `${xp} XP · ${next.xp - xp} XP lagi menuju ${next.name}` : `${xp} XP · gelar tertinggi!`}</small><div class="rank-bar"><i style="width:${pct}%"></i></div></div>
+      <div class="rank-count">${S.badges.length}/${BADGES.length}<small>lencana</small></div>`;
+  }
+
+  function renderBadges(newId) {
+    $('#badges').innerHTML = BADGES.map((b) => medalHTML(b, { cls: b.id === newId ? 'new' : '' })).join('');
+    $('#badges').querySelectorAll('.medal').forEach((el) => el.addEventListener('click', () => openAward(el.dataset.b, false)));
+    renderRank();
+  }
+
+  /* Pop-up lencana */
+  const awardQueue = [];
+  function award(id) {
+    if (S.badges.includes(id)) return;
+    S.badges.push(id); save();
+    awardQueue.push(id);
+    if (!$('#award').hidden) return;
+    setTimeout(nextAward, 650);
+  }
+  function nextAward() { const id = awardQueue.shift(); if (id) openAward(id, true); }
+  function openAward(id, fresh) {
+    const b = BADGES.find((x) => x.id === id);
+    const on = S.badges.includes(id);
+    const card = $('#award .award-card');
+    card.classList.toggle('is-locked', !on);
+    $('#award-kicker').textContent = fresh ? 'Lencana baru!' : on ? `Lencana ${TIER[b.tier]}` : `Belum terbuka · ${TIER[b.tier]}`;
+    $('#award-medal').innerHTML = medalHTML(b, { tag: 'div', compact: true });
+    $('#award-name').textContent = on ? b.name : '???';
+    const [cur, max, unit] = b.prog();
+    $('#award-desc').innerHTML = on ? b.desc : `${b.desc}<br><b>Progresmu: ${cur}/${max} ${unit}</b>`;
+    $('#award-actions').innerHTML = on
+      ? `<button type="button" class="btn btn-yellow" id="aw-share"><svg class="ico-share" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l4 4h-3v8h-2V7H8l4-4zm-7 9h2v7h10v-7h2v9H5v-9z"/></svg>Bagikan lencana</button><button type="button" class="btn btn-ghost" id="aw-close">${awardQueue.length ? 'Lencana berikutnya →' : 'Lanjut main'}</button>`
+      : `<button type="button" class="btn btn-primary" id="aw-close">Oke, aku coba!</button>`;
+    $('#award').hidden = false;
+    $('#aw-close').focus({ preventScroll: true });
+    $('#aw-close').addEventListener('click', closeAward);
+    const sh = $('#aw-share');
+    const txt = `${who()} dapat lencana ${TIER[b.tier]} "${b.name}" di Arena MIPAS! 🏅\n${b.desc}\nAyo coba juga: mipas.vercel.app/arena`;
+    if (sh) sh.addEventListener('click', () => shareImage(() => drawBadgeCard(b), `lencana-${b.id}.png`, txt));
+
+    if (on && fresh) confetti(); else stopConfetti();
+  }
+  function closeAward() {
+    $('#award').hidden = true; stopConfetti();
+    renderBadges(); renderStats();
+    if (awardQueue.length) setTimeout(nextAward, 250);
+    else if (!$('#view-hub').hidden) maybeAskName();
+  }
+  $('#award').addEventListener('click', (e) => { if (e.target.id === 'award') closeAward(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#award').hidden) closeAward(); });
+
+  let cfRaf = null;
+  function stopConfetti() { cancelAnimationFrame(cfRaf); cfRaf = null; const c = $('#confetti'); c.getContext('2d').clearRect(0, 0, c.width, c.height); }
+  function confetti() {
+    if (reduce) return;
+    const c = $('#confetti'), r = c.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+    c.width = r.width * d; c.height = r.height * d;
+    const x = c.getContext('2d'); x.setTransform(d, 0, 0, d, 0, 0);
+    const cols = ['#FFD45C', '#F2782A', '#0F6E66', '#3FB5A6', '#D64545', '#FFFFFF'];
+    const P = Array.from({ length: 90 }, () => ({ x: r.width / 2, y: 150, vx: (Math.random() - .5) * 9, vy: -Math.random() * 9 - 3, s: 4 + Math.random() * 5, c: cols[Math.floor(Math.random() * cols.length)], a: Math.random() * 6, va: (Math.random() - .5) * .3 }));
+    const t0 = performance.now();
+    const step = (now) => {
+      x.clearRect(0, 0, r.width, r.height);
+      P.forEach((p) => { p.vy += .25; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); });
+      if (now - t0 < 2600) cfRaf = requestAnimationFrame(step); else stopConfetti();
+    };
+    cfRaf = requestAnimationFrame(step);
+  }
+
+
+  /* ---------- Nama panggilan (opsional) ---------- */
+  const escH = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const who = () => S.name || 'Aku';
+  function renderName() {
+    $('#hello').textContent = S.name ? `Hai, ${S.name}! 👋` : '#TemanBelajarMIPAS';
+    const pb = $('#profile-btn');
+    pb.classList.toggle('empty', !S.name);
+    $('#avatar').textContent = S.name ? [...S.name][0] : '?';
+    $('#pname').textContent = S.name || 'Isi nama';
+    pb.title = S.name ? `Ganti nama (${S.name})` : 'Isi nama panggilan';
+  }
+  function askName() {
+    $('#name-input').value = S.name || '';
+    $('#name-err').hidden = true;
+    $('#namebox').hidden = false;
+    setTimeout(() => $('#name-input').focus(), 50);
+  }
+  function closeName() { $('#namebox').hidden = true; S.nameAsked = true; save(); renderName(); }
+  $('#name-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = $('#name-input').value.replace(/\s+/g, ' ').trim().slice(0, 20);
+    if (!v) { $('#name-err').hidden = false; $('#name-input').focus(); return; }
+    S.name = v; closeName(); bumpPill('#profile-btn'); toast(`Hai, ${v}! Senang main bareng kamu.`);
+  });
+  $('#name-skip').addEventListener('click', closeName);
+  $('#profile-btn').addEventListener('click', askName);
+  $('#namebox').addEventListener('click', (e) => { if (e.target.id === 'namebox') closeName(); });
+  // Ditanyakan sekali, setelah pemain kembali ke Arena usai main pertama kali
+  function maybeAskName() {
+    if (!S.name && !S.nameAsked && S.xp > 0 && $('#award').hidden && !awardQueue.length) setTimeout(askName, 500);
+  }
+
+  /* ---------- Navigasi ---------- */
+  function show(name) {
+    ['hub', 'daily', 'glbb', 'asean', 'surya', 'kilat', 'sila'].forEach((v) => { const el = $('#view-' + v); el.hidden = v !== name; if (v === name) { el.classList.remove('view-enter'); void el.offsetWidth; el.classList.add('view-enter'); } });
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    if (name === 'hub') { renderHub(); maybeAskName(); }
+    if (name === 'daily') startDaily();
+    if (name === 'asean') introAsean();
+    if (name === 'surya') startSurya();
+    if (name === 'kilat') introKilat();
+    if (name === 'sila') startSila();
+    if (name !== 'kilat') stopKilat();
+    if (name === 'glbb') { setLevel(Math.min(firstOpenLevel(), LEVELS.length - 1)); requestAnimationFrame(resizeCanvas); }
+  }
+  document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => show(b.dataset.open)));
+  document.querySelectorAll('[data-home]').forEach((b) => b.addEventListener('click', () => show('hub')));
+  $('#home-btn').addEventListener('click', () => show('hub'));
+
+  function renderHub() {
+    renderName();
+    const d = S.daily[today()];
+    $('#daily-status').textContent = d && d.done ? `Selesai: ${d.score}/5 ✓` : 'Belum dimainkan hari ini';
+    const stars = LEVELS.reduce((n, _, i) => n + (S.glbb[i] || 0), 0);
+    $('#glbb-status').textContent = `${stars} / ${LEVELS.length * 3} ⭐`;
+    $('#asean-status').textContent = S.best.asean != null ? `Terbaik ${S.best.asean}/10` : 'Belum dimainkan';
+    $('#surya-status').textContent = `${S.best.surya || 0} / 3 ⭐`;
+    $('#kilat-status').textContent = S.best.kilat ? `Rekor ${S.best.kilat} benar` : 'Belum ada rekor';
+    $('#sila-status').textContent = `${S.best.sila || 0} / 3 ⭐`;
+    renderBadges();
+    renderStats();
+  }
+
+  /* =====================================================
+     TANTANGAN HARIAN
+     ===================================================== */
+  // Draf soal — diambil dari materi video MIPAS Channel. Perlu dicek guru.
+  const BANK = [
+    { m: 'IPA', q: 'Pada Gerak Lurus Beraturan (GLB), besaran yang nilainya selalu tetap adalah…', o: ['Kecepatan', 'Percepatan yang terus bertambah', 'Waktu tempuh', 'Massa benda'], a: 0, e: 'Pada GLB kecepatannya tetap, jadi percepatannya nol.', v: 'cC4ZhJdBSwU', vt: 'GLB (Gerak Lurus Beraturan) + Contoh Soal' },
+    { m: 'IPA', q: 'Sebuah mobil mulai bergerak dari diam dengan percepatan 2 m/s². Berapa kecepatannya setelah 5 detik?', o: ['7 m/s', '10 m/s', '2,5 m/s', '25 m/s'], a: 1, e: 'v = v₀ + a·t = 0 + 2 × 5 = 10 m/s.', v: '9NAdK6toH8o', vt: 'GLBB (Gerak Lurus Berubah Beraturan) + Contoh Soal' },
+    { m: 'IPA', q: 'Kecepatan termasuk besaran vektor. Artinya kecepatan memiliki…', o: ['Nilai saja', 'Arah saja', 'Nilai dan arah', 'Satuan kg'], a: 2, e: 'Besaran vektor punya nilai dan arah. Kelajuan hanya punya nilai.', v: 'cQyg4gkUjDI', vt: 'Perbedaan Kecepatan dan Kelajuan' },
+    { m: 'IPA', q: 'Andi berjalan 4 m ke timur, lalu 3 m ke barat. Berapa perpindahan Andi?', o: ['7 m ke timur', '1 m ke timur', '1 m ke barat', '12 m'], a: 1, e: 'Perpindahan dihitung dari posisi awal ke akhir: 4 − 3 = 1 m ke timur. Jaraknya 7 m.', v: 'co4wTksuS8w', vt: 'Gerak Benda – Perpindahan dan Jarak' },
+    { m: 'Matematika', q: 'Berapa nilai dari |−7|?', o: ['−7', '0', '7', '49'], a: 2, e: 'Nilai mutlak adalah jarak ke nol, selalu tidak negatif. |−7| = 7.', v: 'zrotSmzOqBM', vt: 'Pengertian Nilai Mutlak' },
+    { m: 'Matematika', q: 'Penyelesaian dari |x − 2| = 5 adalah…', o: ['x = 7 saja', 'x = 7 atau x = −3', 'x = 3 atau x = −7', 'x = −3 saja'], a: 1, e: 'x − 2 = 5 → x = 7, atau x − 2 = −5 → x = −3.', v: 'uuMA4nAaQKA', vt: 'Persamaan Nilai Mutlak' },
+    { m: 'IPS', q: 'Apa ibu kota negara Vietnam?', o: ['Ho Chi Minh', 'Hanoi', 'Phnom Penh', 'Vientiane'], a: 1, e: 'Ibu kota Vietnam adalah Hanoi. Ho Chi Minh adalah kota terbesarnya.', v: 'bmwnoqkUuVM', vt: 'Mengenal Negara ASEAN – Vietnam' },
+    { m: 'IPS', q: 'Apa ibu kota Brunei Darussalam?', o: ['Kuala Lumpur', 'Bandar Seri Begawan', 'Manila', 'Dili'], a: 1, e: 'Ibu kota Brunei Darussalam adalah Bandar Seri Begawan.', v: 'ZTyeo7sPlV0', vt: 'Mengenal Negara ASEAN – Brunei Darussalam' },
+    { m: 'IPS', q: 'ASEAN didirikan pada 8 Agustus 1967 di kota…', o: ['Jakarta', 'Kuala Lumpur', 'Bangkok', 'Singapura'], a: 2, e: 'ASEAN didirikan lewat Deklarasi Bangkok, 8 Agustus 1967.', v: 'qaSWlWH5cS4', vt: 'Mengenal Negara-Negara ASEAN' },
+    { m: 'Pancasila', q: 'Lambang sila ketiga Pancasila, "Persatuan Indonesia", adalah…', o: ['Bintang', 'Rantai', 'Pohon beringin', 'Kepala banteng'], a: 2, e: 'Sila ketiga dilambangkan pohon beringin.', v: 'PL7zyKUWyZU', vt: 'Makna Nilai-Nilai Pancasila' },
+    { m: 'Pancasila', q: 'Siapa ketua BPUPKI?', o: ['Ir. Soekarno', 'Moh. Hatta', 'dr. K.R.T. Radjiman Wedyodiningrat', 'Mr. Soepomo'], a: 2, e: 'Ketua BPUPKI adalah dr. K.R.T. Radjiman Wedyodiningrat.', v: 'fxA3hpDBhzU', vt: 'Pembentukan BPUPKI' },
+    { m: 'Pancasila', q: 'Sumpah Pemuda diikrarkan pada tanggal…', o: ['17 Agustus 1945', '28 Oktober 1928', '20 Mei 1908', '1 Juni 1945'], a: 1, e: 'Sumpah Pemuda diikrarkan pada 28 Oktober 1928.', v: 'zq4BH3BtUqo', vt: 'Nilai Semangat Sumpah Pemuda' },
+    { m: 'Pancasila', q: 'Pembukaan UUD NRI Tahun 1945 terdiri dari berapa alinea?', o: ['3', '4', '5', '6'], a: 1, e: 'Pembukaan UUD NRI Tahun 1945 terdiri dari 4 alinea.', v: 'UrznQTmNIDE', vt: 'Pembukaan UUD NRI Tahun 1945' },
+    { m: 'Matematika', q: 'Sebuah kubus memiliki panjang rusuk 5 cm. Berapa volumenya?', o: ['25 cm³', '60 cm³', '125 cm³', '150 cm³'], a: 2, e: 'Volume kubus = s × s × s = 5 × 5 × 5 = 125 cm³.', v: 'WrQm30fw28A', vt: 'Bangun Ruang Kubus dan Balok' },
+    { m: 'Matematika', q: 'Balok berukuran panjang 6 cm, lebar 4 cm, dan tinggi 3 cm. Volumenya…', o: ['13 cm³', '48 cm³', '72 cm³', '108 cm³'], a: 2, e: 'Volume balok = p × l × t = 6 × 4 × 3 = 72 cm³.', v: '_c8cNjH4DXM', vt: 'Matematika: Bangun Ruang' },
+    { m: 'Matematika', q: 'Perbandingan kelereng Ani dan Budi 2 : 3. Jumlahnya 25 butir. Berapa kelereng Budi?', o: ['10', '12', '15', '20'], a: 2, e: 'Total bagian 2 + 3 = 5. Budi = 3/5 × 25 = 15 butir.', v: '-YcmgeflAHw', vt: 'Soal dan Pembahasan Rasio' },
+    { m: 'Matematika', q: 'Pada bilangan 4.725, angka 7 bernilai…', o: ['7', '70', '700', '7.000'], a: 2, e: 'Angka 7 berada di tempat ratusan, jadi nilainya 700.', v: 'hJWFyYOaPZk', vt: 'Bilangan Cacah sampai 10.000' },
+    { m: 'IPA', q: 'Rotasi bumi (berputar pada porosnya) menyebabkan…', o: ['Pergantian musim', 'Pergantian siang dan malam', 'Gerhana matahari', 'Pasang surut saja'], a: 1, e: 'Rotasi bumi menyebabkan siang dan malam. Pergantian musim terjadi karena revolusi.', v: 'jPxo4ojBCSQ', vt: 'Dampak Gerak Rotasi di Kehidupan Kita' },
+    { m: 'IPA', q: 'Planet yang paling dekat dengan Matahari adalah…', o: ['Venus', 'Bumi', 'Merkurius', 'Mars'], a: 2, e: 'Urutannya Merkurius, Venus, Bumi, Mars, dan seterusnya.', v: '0X9rDYmmhFI', vt: 'Menjelajah Tata Surya (Shorts)' },
+    { m: 'IPA', q: 'Es batu berubah menjadi air. Perubahan wujud ini disebut…', o: ['Membeku', 'Mencair', 'Menguap', 'Menyublim'], a: 1, e: 'Padat menjadi cair disebut mencair.', v: 'XTThpMcLEJo', vt: 'Perubahan Wujud Benda – Mencair' },
+    { m: 'IPA', q: 'Apa fungsi utama akar pada tumbuhan?', o: ['Tempat fotosintesis', 'Menyerap air dan unsur hara dari tanah', 'Menghasilkan biji', 'Tempat pertukaran gas'], a: 1, e: 'Akar menyerap air dan unsur hara, sekaligus menopang tumbuhan.', v: 'OI0a0aUQNmg', vt: 'Bagian dan Fungsi Tumbuhan' },
+    { m: 'IPA', q: 'Sistem saraf pusat manusia terdiri dari…', o: ['Otak dan sumsum tulang belakang', 'Jantung dan paru-paru', 'Mata dan telinga', 'Tulang dan otot'], a: 0, e: 'Sistem saraf pusat = otak + sumsum tulang belakang.', v: 'Ot0q8wIeTPg', vt: 'Sistem Saraf: Kabel Panjang di Tubuh Kita' },
+    { m: 'IPA', q: 'Kipas angin listrik mengubah energi listrik menjadi energi…', o: ['Kimia', 'Gerak', 'Cahaya', 'Bunyi saja'], a: 1, e: 'Baling-baling kipas berputar, jadi energi listrik berubah menjadi energi gerak.', v: 'jypzLF9OhPo', vt: 'Mengubah Bentuk Energi (Shorts)' },
+    { m: 'B. Inggris', q: 'Lengkapi kalimat: "I ___ visit my grandma tomorrow."', o: ['visited', 'am visit', 'will', 'was'], a: 2, e: 'Simple future tense memakai will + kata kerja dasar: "I will visit…".', v: 'v_8dZOL82Gs', vt: 'Simple Future Tense' },
+  ];
+
+  // Pilih 5 soal yang sama untuk semua orang di hari yang sama
+  function seededPick(dateStr, n) {
+    let h = 2166136261;
+    for (const c of dateStr) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
+    const rnd = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0, h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0, (h ^= h >>> 16) >>> 0) / 4294967296);
+    const idx = BANK.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return idx.slice(0, n);
+  }
+
+  let D = null; // sesi berjalan
+  function startDaily(practice = false) {
+    const day = today();
+    $('#daily-date').textContent = new Date().toLocaleDateString('id-ID', innerWidth < 480 ? { day: 'numeric', month: 'short' } : { day: 'numeric', month: 'long', year: 'numeric' });
+    const saved = S.daily[day];
+    if (!practice && saved && saved.done) { D = { day, picks: saved.picks, answers: saved.answers, i: 5, practice: false }; renderResult(); return; }
+    const picks = practice ? [...BANK.keys()].sort(() => Math.random() - .5).slice(0, 5) : seededPick(day, 5);
+    D = { day, picks, answers: [], i: 0, practice };
+    setSide(M.thinking, practice ? 'Mode latihan' : 'Semangat!', practice ? 'Skor latihan tidak memengaruhi streak.' : 'Baca soalnya pelan-pelan, ya.');
+    $('#side-score').textContent = 0;
+    renderQ();
+  }
+  function setSide(img, title, text, hop) {
+    const el = $('#side-mipa'); el.src = img;
+    if (hop) { el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop'); }
+    $('#side-title').textContent = title; $('#side-text').textContent = text;
+  }
+  const progressHTML = () => `<div class="progress">${D.picks.map((_, k) => `<span class="${k < D.answers.length ? (D.answers[k] ? 'ok' : 'no') : k === D.i ? 'cur' : ''}"></span>`).join('')}</div>`;
+
+  function renderQ() {
+    const Q = BANK[D.picks[D.i]];
+    $('#qcard').innerHTML = `
+      ${progressHTML()}
+      <div class="qmeta"><span class="qnum">Soal ${D.i + 1} dari 5</span><span class="tag ${Q.m === 'IPA' ? 'teal' : Q.m === 'Matematika' ? 'orange' : ''}">${Q.m}</span></div>
+      <p class="qtext">${Q.q}</p>
+      <div class="opts">${Q.o.map((t, k) => `<button type="button" class="opt" data-k="${k}"><b>${'ABCD'[k]}</b><span>${t}</span></button>`).join('')}</div>
+      <div id="fb"></div>
+      <div class="qfoot"><button type="button" class="btn btn-primary" id="next" disabled>${D.i === 4 ? 'Lihat hasil' : 'Soal berikutnya'} →</button></div>`;
+    $('#qcard').querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => answer(+b.dataset.k)));
+    $('#next').addEventListener('click', () => { D.i++; D.i >= 5 ? finishDaily() : renderQ(); });
+    $('#qcard').querySelector('.opt').focus({ preventScroll: true });
+  }
+
+  function answer(k) {
+    const Q = BANK[D.picks[D.i]];
+    const ok = k === Q.a;
+    D.answers.push(ok);
+    $('#qcard').querySelectorAll('.opt').forEach((b, j) => {
+      b.disabled = true;
+      if (j === Q.a) b.classList.add('right');
+      else if (j === k) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+    $('#fb').innerHTML = ok
+      ? `<div class="feedback ok"><div><strong>Benar! +10 XP</strong>${Q.e}</div></div>`
+      : `<div class="feedback no"><div><strong>Belum tepat, tidak apa-apa</strong>${Q.e}<br>Tonton penjelasannya: <a href="${yt(Q.v)}" target="_blank" rel="noopener">▶ ${Q.vt}</a></div></div>`;
+    const score = D.answers.filter(Boolean).length;
+    $('#side-score').textContent = score;
+    ok ? setSide(M.success, 'Hebat!', 'Jawabanmu benar. Lanjut!', true) : setSide(M.oops, 'Hmm, hampir!', 'Coba tonton videonya nanti, ya.', true);
+    if (ok && !D.practice) addXP(10);
+    const nx = $('#next'); nx.disabled = false; nx.focus({ preventScroll: true });
+    const p = $('#qcard .progress'); p.outerHTML = progressHTML();
+  }
+
+  function finishDaily() {
+    const score = D.answers.filter(Boolean).length;
+    if (!D.practice) {
+      const day = D.day;
+      if (S.lastDay !== day) {
+        S.streak = S.lastDay && dayDiff(S.lastDay, day) === 1 ? S.streak + 1 : 1;
+        S.lastDay = day;
+      }
+      S.daily[day] = { done: true, score, picks: D.picks, answers: D.answers };
+      if (score === 5) addXP(20);
+      save(); renderStats(); bumpPill('#pill-streak');
+      award('first');
+      if (score === 5) award('perfect');
+      if (S.streak >= 3) award('streak3');
+    }
+    renderResult();
+  }
+
+  function shareText() {
+    const score = D.answers.filter(Boolean).length;
+    const d = new Date(D.day).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `${S.name ? S.name + ' · ' : ''}Tantangan Harian MIPAS · ${d}\n${D.answers.map((a) => (a ? '🟩' : '🟥')).join('')} ${score}/5 · 🔥 ${S.streak} hari\nBerani coba? mipas.vercel.app/arena`;
+  }
+
+  function renderResult() {
+    const score = D.answers.filter(Boolean).length;
+    const msg = score === 5 ? ['Sempurna!', 'Kamu benar-benar paham, bukan sekadar hafal.'] : score >= 3 ? ['Mantap!', 'Tinggal sedikit lagi menuju 5/5.'] : ['Tetap semangat!', 'Tonton videonya, besok coba lagi.'];
+    const wrong = D.answers.map((a, k) => (a ? null : BANK[D.picks[k]])).filter(Boolean);
+    $('#qcard').innerHTML = `
+      <div class="result">
+        <img src="${score >= 3 ? M.celebrate : M.oops}" alt="" width="199" height="240">
+        <h3>${msg[0]}</h3>
+        <div class="big">${score}/5</div>
+        <div class="grid-share">${D.answers.map((a, k) => `<span class="${a ? 'ok' : 'no'}" style="animation-delay:${k * 0.08}s"></span>`).join('')}</div>
+        <p style="color:var(--ink-2);margin:6px 0 0">${msg[1]}</p>
+        ${D.practice ? '' : `<div class="share-box"><pre id="share-text">${escH(shareText())}</pre><div class="share-btns"><button type="button" class="btn btn-yellow" id="share-img"><svg class="ico-share" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l4 4h-3v8h-2V7H8l4-4zm-7 9h2v7h10v-7h2v9H5v-9z"/></svg>Bagikan hasil</button></div></div>`}
+        ${wrong.length ? `<div class="review"><b style="font-size:14px">Video untuk soal yang belum tepat:</b>${wrong.map((q) => `<a href="${yt(q.v)}" target="_blank" rel="noopener">▶ <span>${q.vt}</span></a>`).join('')}</div>` : ''}
+        <div class="result-actions">
+          <button type="button" class="btn btn-ghost" id="practice">Latihan soal acak</button>
+          <button type="button" class="btn btn-primary" data-go="glbb">Main Troli GLBB →</button>
+        </div>
+        ${D.practice ? '' : '<p class="countdown" id="countdown"></p>'}
+      </div>`;
+    setSide(score >= 3 ? M.success : M.thinking, D.practice ? 'Latihan selesai' : 'Tantangan selesai', D.practice ? 'Latihan bisa diulang kapan saja.' : 'Soal baru muncul besok pagi.', true);
+    $('#side-score').textContent = score;
+    const si = $('#share-img');
+    if (si) si.addEventListener('click', () => shareImage(() => drawDailyCard(), `tantangan-${D.day}.png`, shareText()));
+    const cp = null;
+    if (cp) cp.addEventListener('click', () => {
+      const txt = shareText();
+      const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#share-text')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Teks sudah dipilih, tekan salin'); };
+      try { navigator.clipboard.writeText(txt).then(() => toast('Tersalin! Tempel di grup WhatsApp kelas'), fallback); } catch { fallback(); }
+    });
+    $('#practice').addEventListener('click', () => startDaily(true));
+    $('#qcard [data-go]').addEventListener('click', () => show('glbb'));
+    tickCountdown();
+  }
+  let cdTimer;
+  function tickCountdown() {
+    clearInterval(cdTimer);
+    const el = () => $('#countdown');
+    const run = () => {
+      if (!el()) return clearInterval(cdTimer);
+      const now = new Date(), mid = new Date(now); mid.setHours(24, 0, 0, 0);
+      const s = Math.floor((mid - now) / 1000);
+      el().textContent = `Tantangan berikutnya dalam ${String(Math.floor(s / 3600)).padStart(2, '0')}:${String(Math.floor(s % 3600 / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    };
+    run(); cdTimer = setInterval(run, 1000);
+  }
+
+  /* =====================================================
+     LUNCURKAN TROLI GLBB
+     ===================================================== */
+  const LEVELS = [
+    { name: 'GLB', t: 4, target: 20, lockA: 0, v0: 0, a: 0, hint: 'Percepatan dikunci 0, jadi ini GLB: s = v₀ × t.' },
+    { name: 'GLB', t: 5, target: 35, lockA: 0, v0: 0, a: 0, hint: 'Masih GLB. Berapa v₀ supaya 5 detik menempuh 35 m?' },
+    { name: 'GLBB', t: 4, target: 24, lockV0: 0, v0: 0, a: 0, hint: 'Troli mulai dari diam (v₀ = 0). Cari percepatannya.' },
+    { name: 'GLBB', t: 4, target: 40, v0: 0, a: 0, hint: 'Bebas atur v₀ dan a. Ada lebih dari satu jawaban benar!' },
+    { name: 'Perlambatan', t: 4, target: 32, lockV0: 12, v0: 12, a: 0, hint: 'Troli melaju 12 m/s lalu direm. Percepatannya harus negatif.' },
+  ];
+  const TRACK = 60; // meter
+  let L = 0, v0 = 0, a = 0, anim = null, lastRun = null;
+
+  const firstOpenLevel = () => { let i = 0; while (i < LEVELS.length - 1 && (S.glbb[i] || 0) > 0) i++; return i; };
+  const unlocked = (i) => i === 0 || (S.glbb[i - 1] || 0) > 0;
+
+  // Posisi & kecepatan saat t; troli berhenti (tidak mundur) kalau kecepatannya habis
+  function stateAt(t) {
+    if (a < 0) { const tStop = v0 / -a; if (t > tStop) t = tStop; }
+    return { s: v0 * t + 0.5 * a * t * t, v: v0 + a * t };
+  }
+
+  function renderLevels() {
+    $('#levels').innerHTML = LEVELS.map((lv, i) => {
+      const st = S.glbb[i] || 0;
+      return `<button type="button" class="lv ${i === L ? 'cur' : ''}" data-l="${i}" ${unlocked(i) ? '' : 'disabled'} aria-label="Level ${i + 1}${st ? `, ${st} bintang` : ''}">${i + 1}<span class="lv-stars">${'★'.repeat(st)}</span></button>`;
+    }).join('');
+    $('#levels').querySelectorAll('.lv').forEach((b) => b.addEventListener('click', () => setLevel(+b.dataset.l)));
+  }
+
+  function setLevel(i) {
+    cancelAnimationFrame(anim); anim = null; lastRun = null;
+    L = i; const lv = LEVELS[i];
+    document.querySelector('.lab-actions .btn-yellow')?.remove(); $('#launch').textContent = 'Luncurkan ▶';
+    v0 = lv.lockV0 ?? lv.v0; a = lv.lockA ?? lv.a;
+    const iv = $('#in-v0'), ia = $('#in-a');
+    iv.value = v0; ia.value = a;
+    iv.disabled = lv.lockV0 !== undefined; ia.disabled = lv.lockA !== undefined;
+    $('#ctrl-v0').classList.toggle('locked', iv.disabled);
+    $('#ctrl-a').classList.toggle('locked', ia.disabled);
+    $('#mission').innerHTML = `Level ${i + 1} · ${lv.name} · Berhenti di <b>${lv.target} m</b> setelah <b>${lv.t} s</b>`;
+    $('#f-t').textContent = lv.t;
+    setLab(M.scientist, `Level ${i + 1}: ${lv.name}`, lv.hint);
+    $('#launch').disabled = false;
+    renderLevels(); syncCtrl(); draw(0);
+  }
+
+  function syncCtrl() {
+    $('#v0-val').textContent = `${fmtN(v0)} m/s`;
+    $('#a-val').textContent = `${fmtN(a)} m/s²`;
+    const t = LEVELS[L].t;
+    const s = stateAt(t).s;
+    const stops = a < 0 && v0 / -a < t;
+    $('#f-line').innerHTML = stops
+      ? `Troli berhenti sebelum ${t} s → s = v₀² ÷ (2|a|) = ${fmtN(v0 * v0)} ÷ ${fmtN(-2 * a)} = <b>?</b>`
+      : `s = <em>v₀</em>·t + ½·<em>a</em>·t² = ${fmtN(v0)}·${t} + ½·${fmtN(a)}·${t * t} = <b>?</b>`;
+    void s;
+  }
+  $('#in-v0').addEventListener('input', (e) => { v0 = +e.target.value; syncCtrl(); if (!anim) { lastRun = null; draw(0); } });
+  $('#in-a').addEventListener('input', (e) => { a = +e.target.value; syncCtrl(); if (!anim) { lastRun = null; draw(0); } });
+
+  function setLab(img, title, text, hop) {
+    const el = $('#lab-mipa'); el.src = img;
+    if (hop) { el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop'); }
+    $('#lab-text').innerHTML = `<strong>${title}</strong>${text}`;
+  }
+
+  /* Canvas */
+  const cv = $('#cv'), ctx = cv.getContext('2d');
+  let W = 0, H = 0, dpr = 1;
+  function resizeCanvas() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    const r = cv.getBoundingClientRect(); if (!r.width) return;
+    W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw(lastRun ? lastRun.t : 0);
+  }
+  addEventListener('resize', resizeCanvas);
+
+  const C = { chalk: '#F5F1E8', chalk2: '#9FB0CF', yellow: '#FFD45C', orange: '#F2782A', teal: '#7FD6CB', green: '#7FD6A5', red: '#F2A39B', ink: '#15233F' };
+  function draw(t) {
+    if (!W) return;
+    const padL = 28, padR = 28, groundY = H - 58;
+    const X = (m) => padL + (m / TRACK) * (W - padL - padR);
+    ctx.clearRect(0, 0, W, H);
+
+    // grid tipis seperti papan
+    ctx.strokeStyle = 'rgba(245,241,232,.05)'; ctx.lineWidth = 1;
+    for (let gx = 0; gx < W; gx += 24) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+    for (let gy = 0; gy < H; gy += 24) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+
+    // target zone
+    const lv = LEVELS[L];
+    ctx.fillStyle = 'rgba(127,214,203,.16)';
+    ctx.fillRect(X(lv.target - 1.5), 26, X(lv.target + 1.5) - X(lv.target - 1.5), groundY - 26);
+    ctx.fillStyle = 'rgba(127,214,203,.32)';
+    ctx.fillRect(X(lv.target - 0.5), 26, X(lv.target + 0.5) - X(lv.target - 0.5), groundY - 26);
+    // bendera
+    const fx = X(lv.target);
+    ctx.strokeStyle = C.chalk; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(fx, groundY); ctx.lineTo(fx, groundY - 74); ctx.stroke();
+    ctx.fillStyle = C.orange; ctx.beginPath(); ctx.moveTo(fx + 1.5, groundY - 74); ctx.lineTo(fx + 26, groundY - 65); ctx.lineTo(fx + 1.5, groundY - 56); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = C.chalk; ctx.font = '700 12px "Plus Jakarta Sans", sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(`${lv.target} m`, fx, 18);
+
+    // lintasan + skala
+    ctx.strokeStyle = C.chalk2; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(0), groundY); ctx.lineTo(X(TRACK), groundY); ctx.stroke();
+    ctx.fillStyle = C.chalk2; ctx.font = '600 11px "Plus Jakarta Sans", sans-serif';
+    for (let m = 0; m <= TRACK; m += 5) {
+      const big = m % 10 === 0;
+      ctx.beginPath(); ctx.moveTo(X(m), groundY); ctx.lineTo(X(m), groundY + (big ? 10 : 5)); ctx.stroke();
+      if (big && (W > 420 || m % 20 === 0)) ctx.fillText(String(m), X(m), groundY + 24);
+    }
+    ctx.textAlign = 'right'; ctx.fillText('meter', X(TRACK), groundY + 42); ctx.textAlign = 'center';
+
+    // pita ketik: titik tiap 0,5 s
+    const st = stateAt(t);
+    ctx.fillStyle = C.yellow;
+    for (let k = 0; k <= t + 1e-6; k += 0.5) {
+      const p = stateAt(k).s;
+      ctx.globalAlpha = 0.85; ctx.beginPath(); ctx.arc(X(Math.max(0, Math.min(TRACK, p))), groundY - 8, 3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // troli
+    const cx = X(Math.max(0, Math.min(TRACK, st.s)));
+    const cw = 40, ch = 22, cy = groundY - 8 - ch - 6;
+    ctx.fillStyle = C.yellow;
+    roundRect(cx - cw, cy, cw, ch, 6); ctx.fill();
+    ctx.fillStyle = C.ink; ctx.font = '800 11px "Bricolage Grotesque", sans-serif'; ctx.fillText('M', cx - cw / 2, cy + 15);
+    ctx.fillStyle = C.chalk;
+    [cx - cw + 9, cx - 9].forEach((wx) => { ctx.beginPath(); ctx.arc(wx, cy + ch + 3, 5, 0, Math.PI * 2); ctx.fill(); });
+
+    // readout
+    $('#r-t').textContent = `${fmt(Math.min(t, lv.t))} s`;
+    $('#r-v').textContent = `${fmt(Math.max(0, st.v))} m/s`;
+    $('#r-s').textContent = `${fmt(st.s)} m`;
+  }
+  function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  $('#launch').addEventListener('click', () => {
+    if (anim) return;
+    const lv = LEVELS[L];
+    $('#launch').disabled = true;
+    setLab(M.scientist, 'Meluncur…', 'Perhatikan jarak antar titik kuning: makin renggang berarti makin cepat.');
+    const speed = 0.8, start = performance.now();
+    const step = (now) => {
+      const t = Math.min(lv.t, ((now - start) / 1000) * speed * (reduce ? 50 : 1));
+      lastRun = { t }; draw(t);
+      if (t < lv.t) anim = requestAnimationFrame(step);
+      else { anim = null; judge(); }
+    };
+    anim = requestAnimationFrame(step);
+  });
+  $('#reset').addEventListener('click', () => setLevel(L));
+
+  function judge() {
+    const lv = LEVELS[L];
+    const s = stateAt(lv.t).s;
+    const off = Math.abs(s - lv.target);
+    const stars = off <= 0.5 ? 3 : off <= 1.5 ? 2 : off <= 3 ? 1 : 0;
+    $('#f-line').innerHTML = $('#f-line').innerHTML.replace('<b>?</b>', `<b>${fmtN(Math.round(s * 10) / 10)} m</b>`);
+    if (stars) {
+      const prev = S.glbb[L] || 0;
+      if (stars > prev) { addXP((stars - prev) * 5); S.glbb[L] = stars; save(); }
+      const last = L === LEVELS.length - 1;
+      setLab(stars === 3 ? M.celebrate : M.success, `${'⭐'.repeat(stars)} ${stars === 3 ? 'Tepat sasaran!' : 'Hampir pas!'}`, stars === 3 ? (last ? 'Semua level selesai. Kamu Ahli GLBB!' : 'Level berikutnya terbuka.') : `Selisih ${fmt(off)} m dari bendera. Coba hitung lagi untuk ⭐⭐⭐.`, true);
+      if ((S.glbb[0] || 0) && (S.glbb[1] || 0)) award('glb');
+      if (LEVELS.every((_, i) => (S.glbb[i] || 0) >= 2)) award('glbbpro');
+      renderLevels();
+      $('#launch').disabled = false;
+      $('#launch').textContent = 'Luncurkan lagi ▶';
+      if (!last) {
+        const nb = document.createElement('button'); nb.type = 'button'; nb.className = 'btn btn-yellow'; nb.textContent = `Level ${L + 2} →`;
+        nb.addEventListener('click', () => { nb.remove(); $('#launch').textContent = 'Luncurkan ▶'; setLevel(L + 1); });
+        const acts = document.querySelector('.lab-actions'); acts.querySelector('.btn-yellow')?.remove(); acts.appendChild(nb);
+      }
+    } else {
+      const lessMore = s < lv.target ? 'kurang jauh' : 'kejauhan';
+      setLab(M.oops, `Troli ${lessMore}`, `Berhenti di ${fmt(s)} m, target ${lv.target} m. Ubah nilainya lalu coba lagi. Butuh bantuan? <a href="${yt(lv.lockA === 0 ? 'cC4ZhJdBSwU' : '9NAdK6toH8o')}" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">Tonton video ${lv.lockA === 0 ? 'GLB' : 'GLBB'}</a>`, true);
+      $('#launch').disabled = false;
+    }
+  }
+
+
+  /* =====================================================
+     UTIL GAME
+     ===================================================== */
+  const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const starStr = (n) => '⭐'.repeat(n) + '☆'.repeat(3 - n);
+  function sideSet(prefix, img, title, text, hop) {
+    const el = $(`#${prefix}-mipa`); el.src = img;
+    if (hop) { el.classList.remove('hop'); void el.offsetWidth; el.classList.add('hop'); }
+    $(`#${prefix}-st`).textContent = title; $(`#${prefix}-sp`).textContent = text;
+  }
+  function saveBest(key, val, higherIsBetter = true) {
+    const prev = S.best[key];
+    const better = prev == null || (higherIsBetter ? val > prev : val < prev);
+    if (better) { S.best[key] = val; save(); }
+    return better;
+  }
+  function endCard(box, { img, title, big, stars, text, again, againLabel = 'Main lagi' }) {
+    box.innerHTML = `<div class="endcard">
+      <img src="${img}" alt="" width="199" height="240">
+      <h3>${title}</h3>
+      ${big != null ? `<div class="big">${big}</div>` : ''}
+      ${stars != null ? `<div class="stars-big">${starStr(stars)}</div>` : ''}
+      <p>${text}</p>
+      <div class="result-actions">
+        <button type="button" class="btn btn-primary" data-again>${againLabel}</button>
+        <button type="button" class="btn btn-ghost" data-home2>Pilih game lain</button>
+      </div></div>`;
+    box.querySelector('[data-again]').addEventListener('click', again);
+    box.querySelector('[data-home2]').addEventListener('click', () => show('hub'));
+  }
+
+  /* =====================================================
+     TEBAK NEGARA ASEAN
+     ===================================================== */
+  const NEG = [
+    { n: 'Indonesia', c: null, u: 'Rupiah' },
+    { n: 'Malaysia', c: 'Kuala Lumpur', u: 'Ringgit' },
+    { n: 'Singapura', c: 'Singapura', u: 'Dolar Singapura' },
+    { n: 'Thailand', c: 'Bangkok', u: 'Baht' },
+    { n: 'Filipina', c: 'Manila', u: 'Peso' },
+    { n: 'Vietnam', c: 'Hanoi', u: 'Dong' },
+    { n: 'Laos', c: 'Vientiane', u: 'Kip' },
+    { n: 'Kamboja', c: 'Phnom Penh', u: 'Riel' },
+    { n: 'Myanmar', c: 'Naypyidaw', u: 'Kyat' },
+    { n: 'Brunei Darussalam', c: 'Bandar Seri Begawan', u: 'Dolar Brunei' },
+    { n: 'Timor-Leste', c: 'Dili', u: 'Dolar Amerika Serikat' },
+  ];
+  const ASEAN_FACTS = [
+    { k: 'Fakta ASEAN', q: 'Negara yang resmi menjadi anggota ke-11 ASEAN pada tahun 2025 adalah…', a: 'Timor-Leste', pool: ['Papua Nugini', 'Timor-Leste', 'Sri Lanka', 'Bangladesh'] },
+    { k: 'Fakta ASEAN', q: 'Satu-satunya negara ASEAN yang tidak memiliki laut (terkurung daratan) adalah…', a: 'Laos', pool: ['Laos', 'Kamboja', 'Myanmar', 'Thailand'] },
+    { k: 'Fakta ASEAN', q: 'Kantor Sekretariat ASEAN berada di kota…', a: 'Jakarta', pool: ['Jakarta', 'Bangkok', 'Kuala Lumpur', 'Manila'] },
+    { k: 'Fakta ASEAN', q: 'ASEAN didirikan lewat Deklarasi Bangkok pada tahun…', a: '1967', pool: ['1945', '1967', '1976', '1999'] },
+  ];
+  function buildAsean() {
+    const qs = [];
+    NEG.forEach((x) => {
+      if (x.c) qs.push({ k: 'Ibu kota', q: `Apa ibu kota ${x.n}?`, a: x.c, opts: shuffle([x.c, ...shuffle(NEG.filter((y) => y.c && y.c !== x.c).map((y) => y.c)).slice(0, 3)]) });
+      if (x.c && x.c !== x.n) qs.push({ k: 'Tebak negara', q: `${x.c} adalah ibu kota negara…`, a: x.n, opts: shuffle([x.n, ...shuffle(NEG.filter((y) => y.n !== x.n).map((y) => y.n)).slice(0, 3)]) });
+      qs.push({ k: 'Mata uang', q: `Mata uang resmi ${x.n} adalah…`, a: x.u, opts: shuffle([x.u, ...shuffle(NEG.filter((y) => y.u !== x.u).map((y) => y.u)).slice(0, 3)]) });
+    });
+    ASEAN_FACTS.forEach((f) => qs.push({ k: f.k, q: f.q, a: f.a, opts: shuffle(f.pool) }));
+    // 10 soal, maksimal 1 soal per negara per jenis supaya bervariasi
+    const picked = [], used = new Set();
+    for (const q of shuffle(qs)) { const key = q.a + q.k; if (used.has(q.a)) continue; used.add(q.a); picked.push(q); if (picked.length === 10) break; void key; }
+    return picked;
+  }
+  let A = null;
+  function introAsean() {
+    const box = $('#asean-box');
+    $('#asean-sc').textContent = 0;
+    sideSet('asean', M.explorer, 'Siap menjelajah?', 'Ada 11 negara anggota ASEAN, termasuk Timor-Leste yang bergabung tahun 2025.');
+    box.innerHTML = `<div class="intro"><img src="${M.explorer}" alt="" width="191" height="240"><h3>Tebak Negara ASEAN</h3>
+      <p>10 soal tentang ibu kota, mata uang, dan fakta negara-negara Asia Tenggara. Jawab beruntun untuk kombo 🔥.</p>
+      <button type="button" class="btn btn-primary" id="asean-go">Mulai ▶</button>${S.best.asean != null ? `<p class="countdown">Skor terbaikmu: ${S.best.asean}/10</p>` : ''}</div>`;
+    $('#asean-go').addEventListener('click', startAsean);
+  }
+  function startAsean() { A = { qs: buildAsean(), i: 0, score: 0, combo: 0 }; $('#asean-sc').textContent = 0; renderAsean(); }
+  function renderAsean() {
+    const q = A.qs[A.i];
+    $('#asean-box').innerHTML = `
+      <div class="progress">${A.qs.map((_, k) => `<span class="${k < A.i ? (A.qs[k].ok ? 'ok' : 'no') : k === A.i ? 'cur' : ''}"></span>`).join('')}</div>
+      <div class="ghud"><span class="qnum">Soal ${A.i + 1} dari 10</span><span class="combo" id="asean-combo">${A.combo > 1 ? `🔥 Kombo ×${A.combo}` : ''}</span></div>
+      <p class="asean-q"><small>${q.k}</small>${q.q}</p>
+      <div class="opts two">${q.opts.map((o, k) => `<button type="button" class="opt" data-k="${k}"><b>${'ABCD'[k]}</b><span>${o}</span></button>`).join('')}</div>`;
+    $('#asean-box').querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => answerAsean(b, q)));
+  }
+  function answerAsean(btn, q) {
+    const pick = q.opts[+btn.dataset.k];
+    q.ok = pick === q.a;
+    $('#asean-box').querySelectorAll('.opt').forEach((b, k) => { b.disabled = true; if (q.opts[k] === q.a) b.classList.add('right'); else if (b === btn) b.classList.add('wrong'); else b.classList.add('dim'); });
+    if (q.ok) { A.score++; A.combo++; $('#asean-sc').textContent = A.score; sideSet('asean', M.success, A.combo > 2 ? `Kombo ×${A.combo}!` : 'Tepat!', `${q.a} memang benar.`, true); }
+    else { A.combo = 0; sideSet('asean', M.oops, 'Belum tepat', `Jawabannya ${q.a}.`, true); }
+    setTimeout(() => { A.i++; A.i < 10 ? renderAsean() : endAsean(); }, q.ok ? 800 : 1500);
+  }
+  function endAsean() {
+    const s = A.score, stars = s >= 9 ? 3 : s >= 7 ? 2 : s >= 5 ? 1 : 0;
+    const rec = saveBest('asean', s);
+    addXP(s * 2);
+    if (s >= 8) award('asean');
+    endCard($('#asean-box'), { img: s >= 7 ? M.celebrate : M.oops, title: s >= 9 ? 'Penjelajah sejati!' : s >= 7 ? 'Keren!' : 'Ayo coba lagi!', big: `${s}/10`, stars,
+      text: `${rec ? 'Rekor baru! ' : ''}+${s * 2} XP. Pelajari lagi di video <a href="${yt('qaSWlWH5cS4')}" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">Mengenal Negara-Negara ASEAN</a>.`, again: startAsean });
+    sideSet('asean', s >= 7 ? M.success : M.explorer, 'Selesai!', 'Soal diacak, jadi setiap main hasilnya berbeda.', true);
+  }
+
+  /* =====================================================
+     SUSUN TATA SURYA
+     ===================================================== */
+  const PLANETS = [
+    { n: 'Merkurius', k: 'merkurius', d: 22, f: 'Planet terkecil dan paling dekat dengan Matahari.' },
+    { n: 'Venus', k: 'venus', d: 30, f: 'Planet terpanas karena atmosfernya sangat tebal.' },
+    { n: 'Bumi', k: 'bumi', d: 31, f: 'Satu-satunya planet yang diketahui memiliki kehidupan.' },
+    { n: 'Mars', k: 'mars', d: 26, f: 'Dijuluki planet merah karena tanahnya mengandung besi oksida.' },
+    { n: 'Jupiter', k: 'jupiter', d: 50, f: 'Planet terbesar di tata surya.' },
+    { n: 'Saturnus', k: 'saturnus', d: 44, wide: 2.2, f: 'Terkenal dengan cincinnya yang besar dan indah.' },
+    { n: 'Uranus', k: 'uranus', d: 36, tall: 1.55, f: 'Berotasi dalam posisi sangat miring, seperti menggelinding.' },
+    { n: 'Neptunus', k: 'neptunus', d: 36, f: 'Planet terjauh dari Matahari.' },
+  ];
+  let P = null;
+  const planetHTML = (i, scale = 1) => {
+    const p = PLANETS[i]; const d = p.d * scale;
+    const w = p.wide ? d * p.wide : p.tall ? (d * p.tall) * (PL[p.k].w / PL[p.k].h) : d;
+    return `<img class="pimg" src="${PL[p.k].src}" alt="" style="width:${Math.round(w)}px" draggable="false">`;
+  };
+  function startSurya() {
+    P = { slots: Array(8).fill(null), tray: shuffle([0, 1, 2, 3, 4, 5, 6, 7]), tries: 0, done: false };
+    $('#surya-sc').textContent = 0;
+    sideSet('surya', M.astronaut, 'Ayo jadi astronom!', 'Ketuk planet untuk menaruhnya di orbit berikutnya. Ketuk planet di orbit untuk mengembalikannya.');
+    renderSurya();
+  }
+  function renderSurya(marks) {
+    const box = $('#surya-box');
+    const full = P.slots.every((x) => x !== null);
+    box.innerHTML = `
+      <div class="space"><div class="space-row"><span class="sun" title="Matahari" style="background-image:url(${PL.sun.src})"></span>
+        ${P.slots.map((pi, k) => `<button type="button" class="slot ${pi !== null ? 'filled' : ''} ${marks ? (marks[k] ? 'ok' : 'no') : ''}" data-s="${k}" aria-label="Orbit ${k + 1}${pi !== null ? ': ' + PLANETS[pi].n : ''}">${pi !== null ? planetHTML(pi, 1.35) : ''}<span class="slot-num">${k + 1}</span></button>`).join('')}
+      </div></div>
+      <div class="tray">${P.tray.map((pi) => `<button type="button" class="pchip" data-p="${pi}"><span class="planet-wrap">${planetHTML(pi)}</span>${PLANETS[pi].n}</button>`).join('') || '<p class="surya-hint">Semua planet sudah di orbit. Tekan Periksa!</p>'}</div>
+      <div class="result-actions"><button type="button" class="btn btn-primary" id="surya-check" ${full ? '' : 'disabled'}>Periksa urutan</button><button type="button" class="btn btn-ghost" id="surya-reset">Acak ulang</button></div>
+      <p class="surya-hint">Orbit 1 paling dekat dengan Matahari.</p>`;
+    box.querySelectorAll('.pchip').forEach((b) => b.addEventListener('click', () => { const pi = +b.dataset.p; const k = P.slots.indexOf(null); if (k < 0) return; P.slots[k] = pi; P.tray = P.tray.filter((x) => x !== pi); $('#surya-sc').textContent = P.slots.filter((x) => x !== null).length; renderSurya(); }));
+    box.querySelectorAll('.slot').forEach((b) => b.addEventListener('click', () => { const k = +b.dataset.s; const pi = P.slots[k]; if (pi === null) return; P.slots[k] = null; P.tray.push(pi); $('#surya-sc').textContent = P.slots.filter((x) => x !== null).length; renderSurya(); }));
+    $('#surya-check').addEventListener('click', checkSurya);
+    $('#surya-reset').addEventListener('click', startSurya);
+  }
+  function checkSurya() {
+    P.tries++;
+    const marks = P.slots.map((pi, k) => pi === k);
+    const right = marks.filter(Boolean).length;
+    renderSurya(marks);
+    $('#surya-box').querySelectorAll('button').forEach((b) => (b.disabled = true));
+    if (right === 8) {
+      const stars = P.tries === 1 ? 3 : P.tries === 2 ? 2 : 1;
+      const prev = S.best.surya || 0;
+      if (stars > prev) { S.best.surya = stars; save(); }
+      addXP(stars * 5);
+      if (P.tries === 1) award('astro');
+      sideSet('surya', M.celebrate, 'Urutan sempurna!', `Kamu berhasil dalam ${P.tries} kali coba.`, true);
+      setTimeout(() => {
+        endCard($('#surya-box'), { img: M.celebrate, title: 'Tata surya tersusun!', stars, text: `+${stars * 5} XP. Ini fakta tiap planet:`, again: startSurya });
+        const f = document.createElement('div'); f.className = 'facts';
+        f.innerHTML = PLANETS.map((p, i) => `<div>${planetHTML(i, .8)}<b>${p.n}</b><span>${p.f}</span></div>`).join('');
+        $('#surya-box .endcard p').after(f);
+      }, 900);
+    } else {
+      sideSet('surya', M.oops, `${right} dari 8 benar`, 'Planet yang salah tempat akan kembali ke bawah. Coba lagi!', true);
+      setTimeout(() => {
+        P.slots = P.slots.map((pi, k) => (pi === k ? pi : (P.tray.push(pi), null)));
+        $('#surya-sc').textContent = right;
+        renderSurya();
+      }, 1300);
+    }
+  }
+
+  /* =====================================================
+     HITUNG KILAT
+     ===================================================== */
+  const fmtInt = (n) => n.toLocaleString('id-ID');
+  function uniqOpts(ans, cands) {
+    const out = [ans];
+    for (const c of cands) if (!out.includes(c) && out.length < 3) out.push(c);
+    let n = 1; while (out.length < 3) { const c = typeof ans === 'number' ? ans + n * 3 : ans + n; if (!out.includes(c)) out.push(c); n++; }
+    return shuffle(out);
+  }
+  const FRAC = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [2, 5], [3, 5], [4, 5], [5, 6]];
+  const KGEN = [
+    () => { const a = rint(1000, 6000), b = rint(100, 3999), r = a + b; return { label: 'Penjumlahan', q: `${fmtInt(a)} + ${fmtInt(b)}`, a: fmtInt(r), o: uniqOpts(r, [r + 10, r - 100, r + 1000, r - 10]).map(fmtInt) }; },
+    () => { const a = rint(2000, 9999), b = rint(100, a - 100), r = a - b; return { label: 'Pengurangan', q: `${fmtInt(a)} − ${fmtInt(b)}`, a: fmtInt(r), o: uniqOpts(r, [r + 100, r - 10, r + 10, r - 1000].filter((x) => x >= 0)).map(fmtInt) }; },
+    () => { const x = rint(3, 12), y = rint(3, 12), r = x * y; return { label: 'Perkalian', q: `${x} × ${y}`, a: String(r), o: uniqOpts(r, [r + x, r - y, r + 1, (x + 1) * y]).map(String) }; },
+    () => { const x = rint(3, 12), y = rint(3, 9), r = x; return { label: 'Pembagian', q: `${x * y} : ${y}`, a: String(r), o: uniqOpts(r, [r + 1, r - 1, r + 2]).map(String) }; },
+    () => { let n, d, pos; do { n = rint(1000, 9999); pos = rint(0, 2); d = String(n)[pos]; } while (d === '0' || String(n).split(d).length > 2); const val = +d * [1000, 100, 10][pos]; return { label: 'Nilai tempat', q: `Nilai angka ${d} pada ${fmtInt(n)}`, small: true, a: fmtInt(val), o: uniqOpts(val, [+d * 1000, +d * 100, +d * 10, +d]).map(fmtInt) }; },
+    () => { let p = rint(1, 4), q = rint(2, 5); if (p === q) q++; const k = rint(2, 6), r = q * k; return { label: 'Rasio', q: `A : B = ${p} : ${q}. Jika A = ${p * k}, B = …`, small: true, a: String(r), o: uniqOpts(r, [p * k, r + k, r - k].filter((x) => x > 0)).map(String) }; },
+    () => { const [p, q] = FRAC[rint(0, FRAC.length - 1)], m = rint(2, 4); const ans = `${p}/${q}`; const others = shuffle(FRAC.filter(([a, b]) => `${a}/${b}` !== ans)).map(([a, b]) => `${a}/${b}`); return { label: 'Pecahan', q: `Bentuk paling sederhana dari ${p * m}/${q * m}`, small: true, a: ans, o: uniqOpts(ans, others) }; },
+  ];
+  let K = null, kTimer = null;
+  function stopKilat() { clearInterval(kTimer); kTimer = null; document.removeEventListener('keydown', kKeys); }
+  function introKilat() {
+    stopKilat();
+    $('#kilat-sc').textContent = 0;
+    sideSet('kilat', M.stopwatch, '60 detik!', 'Jawaban salah mengurangi waktu 2 detik. Bisa pakai tombol 1, 2, 3 di keyboard.');
+    $('#kilat-box').innerHTML = `<div class="intro"><img src="${M.stopwatch}" alt="" width="235" height="240"><h3>Hitung Kilat</h3>
+      <p>Jawab soal sebanyak-banyaknya dalam 60 detik.</p>
+      <ul><li>Penjumlahan, pengurangan, perkalian, pembagian</li><li>Nilai tempat bilangan sampai 10.000</li><li>Pecahan sederhana dan rasio</li></ul>
+      <button type="button" class="btn btn-primary" id="kilat-go">Mulai ▶</button>${S.best.kilat ? `<p class="countdown">Rekormu: ${S.best.kilat} benar</p>` : ''}</div>`;
+    $('#kilat-go').addEventListener('click', startKilat);
+  }
+  function kKeys(e) { if (!K || K.over) return; const n = +e.key; if (n >= 1 && n <= 3) { const b = $('#kilat-box').querySelectorAll('.opt')[n - 1]; if (b && !b.disabled) b.click(); } }
+  function startKilat() {
+    K = { left: 60, score: 0, wrong: 0, combo: 0, over: false };
+    $('#kilat-sc').textContent = 0;
+    $('#kilat-box').innerHTML = `<div class="ghud"><span class="kscore">✓ <span id="k-score">0</span> benar</span><span class="combo" id="k-combo"></span><span class="kscore">⏱ <span id="k-left">60</span> s</span></div>
+      <div class="timer" id="k-timer"><i style="width:100%"></i></div><div id="k-q"></div>`;
+    nextK();
+    const t0 = performance.now(); let lastSec = 60;
+    kTimer = setInterval(() => {
+      K.left = Math.max(0, K.left - 0.1);
+      const el = $('#k-left'); if (!el) return stopKilat();
+      if (Math.ceil(K.left) !== lastSec) { lastSec = Math.ceil(K.left); el.textContent = lastSec; }
+      $('#k-timer i').style.width = `${(K.left / 60) * 100}%`;
+      $('#k-timer').classList.toggle('low', K.left < 10);
+      if (K.left <= 0) endKilat();
+      void t0;
+    }, 100);
+    document.addEventListener('keydown', kKeys);
+  }
+  function nextK() {
+    const g = KGEN[rint(0, KGEN.length - 1)]();
+    K.cur = g;
+    $('#k-q').innerHTML = `<p class="kq ${g.small ? 'long' : ''}">${g.small ? `<small>${g.label}</small>${g.q}` : `<small>${g.label}</small>${g.q} = ?`}</p>
+      <div class="opts three">${g.o.map((o, k) => `<button type="button" class="opt big" data-v="${o}">${o}<b>${k + 1}</b></button>`).join('')}</div>`;
+    $('#k-q').querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => answerK(b)));
+  }
+  function answerK(btn) {
+    if (K.over) return;
+    const ok = btn.dataset.v === K.cur.a;
+    $('#k-q').querySelectorAll('.opt').forEach((b) => { b.disabled = true; if (b.dataset.v === K.cur.a) b.classList.add('right'); else if (b === btn) b.classList.add('wrong'); });
+    if (ok) { K.score++; K.combo++; $('#k-score').textContent = K.score; $('#kilat-sc').textContent = K.score; const c = $('#k-combo'); c.textContent = K.combo > 2 ? `🔥 ×${K.combo}` : ''; c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump'); }
+    else { K.wrong++; K.combo = 0; K.left = Math.max(0, K.left - 2); $('#k-combo').innerHTML = '<span class="penalty">−2 detik</span>'; }
+    setTimeout(() => { if (!K.over) nextK(); }, ok ? 250 : 700);
+  }
+  function endKilat() {
+    if (K.over) return; K.over = true; stopKilat();
+    const s = K.score, stars = s >= 15 ? 3 : s >= 10 ? 2 : s >= 5 ? 1 : 0;
+    const rec = saveBest('kilat', s);
+    addXP(s);
+    if (s >= 15) award('kilat');
+    sideSet('kilat', s >= 10 ? M.success : M.oops, 'Waktu habis!', rec && s ? 'Rekor baru, hebat!' : 'Coba kalahkan rekormu.', true);
+    endCard($('#kilat-box'), { img: s >= 10 ? M.celebrate : M.oops, title: rec && s ? 'Rekor baru!' : 'Waktu habis!', big: `${s} benar`, stars, text: `${K.wrong} salah · +${s} XP · Rekor: ${S.best.kilat || 0}`, again: startKilat });
+  }
+
+  /* =====================================================
+     PASANGKAN SILA
+     ===================================================== */
+  const SILA = [
+    { t: 'Ketuhanan Yang Maha Esa', k: 'bintang', sym: ['⭐', 'Bintang'], act: 'Beribadah sesuai agama masing-masing dan menghormati teman yang berbeda agama.' },
+    { t: 'Kemanusiaan yang adil dan beradab', k: 'rantai', sym: ['⛓️', 'Rantai'], act: 'Menolong teman yang sedang kesusahan tanpa membeda-bedakan.' },
+    { t: 'Persatuan Indonesia', k: 'beringin', sym: ['🌳', 'Pohon beringin'], act: 'Bermain dan bekerja sama dengan teman dari berbagai suku dan daerah.' },
+    { t: 'Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan', k: 'banteng', sym: ['🐂', 'Kepala banteng'], act: 'Ikut musyawarah memilih ketua kelas dan menerima hasilnya.' },
+    { t: 'Keadilan sosial bagi seluruh rakyat Indonesia', k: 'padi', sym: ['🌾', 'Padi dan kapas'], act: 'Membagi tugas piket kelas secara adil untuk semua teman.' },
+  ];
+  let Z = null;
+  function startSila() { Z = { round: 0, mistakes: 0, done: new Set(), sel: null, total: 0 }; $('#sila-sc').textContent = 0; sideSet('sila', M.merahputih, 'Babak 1: Lambang', 'Ketuk satu sila di kiri, lalu lambangnya di kanan.'); renderSila(); }
+  function renderSila() {
+    const right = shuffle(SILA.map((_, i) => i));
+    Z.right = right; Z.done = new Set(); Z.sel = null;
+    const isSym = Z.round === 0;
+    $('#sila-box').innerHTML = `
+      <div class="ghud"><span class="round-tag">Babak ${Z.round + 1} dari 2 · ${isSym ? 'Sila ↔ Lambang' : 'Sila ↔ Contoh sikap'}</span><span class="qnum">Salah: <span id="z-mis">${Z.mistakes}</span></span></div>
+      <div class="match ${isSym ? 'sym' : 'act'}">
+        <div class="mcol">${SILA.map((s, i) => `<button type="button" class="mitem" data-side="L" data-i="${i}"><span class="no-badge">${i + 1}</span><span lang="id">${s.t.replace('permusyawaratan/', 'permusya&shy;waratan/<wbr>').replace('kebijaksanaan', 'kebijak&shy;sanaan')}</span></button>`).join('')}</div>
+        <div class="mcol">${right.map((i) => `<button type="button" class="mitem" data-side="R" data-i="${i}">${isSym ? `<img class="sym-img" src="${SL[SILA[i].k]}" alt=""><span>${SILA[i].sym[1]}</span>` : `<span>${SILA[i].act}</span>`}</button>`).join('')}</div>
+      </div>`;
+    $('#sila-box').querySelectorAll('.mitem').forEach((b) => b.addEventListener('click', () => pickSila(b)));
+  }
+  function pickSila(b) {
+    if (b.classList.contains('done')) return;
+    if (!Z.sel || Z.sel.dataset.side === b.dataset.side) {
+      $('#sila-box').querySelectorAll('.mitem.sel').forEach((x) => x.classList.remove('sel'));
+      b.classList.add('sel'); Z.sel = b; return;
+    }
+    const a = Z.sel; Z.sel = null; a.classList.remove('sel');
+    if (a.dataset.i === b.dataset.i) {
+      [a, b].forEach((x) => { x.classList.add('done'); x.disabled = true; });
+      Z.done.add(+a.dataset.i); Z.total++; $('#sila-sc').textContent = Z.total;
+      if (Z.done.size === 5) {
+        if (Z.round === 0) {
+          sideSet('sila', M.success, 'Babak 1 beres!', 'Sekarang cocokkan sila dengan contoh sikap sehari-hari.', true);
+          setTimeout(() => { Z.round = 1; renderSila(); }, 900);
+        } else endSila();
+      }
+    } else {
+      Z.mistakes++; $('#z-mis').textContent = Z.mistakes;
+      [a, b].forEach((x) => { x.classList.remove('bad'); void x.offsetWidth; x.classList.add('bad'); });
+      sideSet('sila', M.oops, 'Belum cocok', 'Coba pasangan yang lain, ya.', true);
+    }
+  }
+  function endSila() {
+    const m = Z.mistakes, stars = m <= 1 ? 3 : m <= 3 ? 2 : 1;
+    const prev = S.best.sila || 0;
+    if (stars > prev) { S.best.sila = stars; save(); }
+    addXP(stars * 5);
+    if (m <= 1) award('sila');
+    sideSet('sila', M.celebrate, 'Hebat!', 'Kamu mengenal Pancasila dengan baik.', true);
+    endCard($('#sila-box'), { img: M.celebrate, title: m === 0 ? 'Sempurna!' : 'Semua cocok!', stars, text: `${m} kali salah · +${stars * 5} XP. Pelajari lagi di video <a href="${yt('PL7zyKUWyZU')}" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">Makna Nilai-Nilai Pancasila</a>.`, again: startSila });
+  }
+
+
+  /* =====================================================
+     KARTU GAMBAR UNTUK DIBAGIKAN
+     ===================================================== */
+  const imgCache = {};
+  const loadImg = (src) => imgCache[src] || (imgCache[src] = new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; }));
+  const CW = 1080, CH = 1350;
+  function rr(x, c, y, w, h, r) { x.beginPath(); x.moveTo(c + r, y); x.arcTo(c + w, y, c + w, y + h, r); x.arcTo(c + w, y + h, c, y + h, r); x.arcTo(c, y + h, c, y, r); x.arcTo(c, y, c + w, y, r); x.closePath(); }
+  function wrapText(x, text, cx, y, maxW, lh) {
+    const words = String(text).split(' '); let line = '', lines = [];
+    words.forEach((w) => { const t = line ? line + ' ' + w : w; if (x.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    if (line) lines.push(line);
+    lines.forEach((l, i) => x.fillText(l, cx, y + i * lh));
+    return lines.length * lh;
+  }
+  async function baseCard() {
+    if (document.fonts && document.fonts.ready) { try { await document.fonts.load('800 64px "Bricolage Grotesque"'); await document.fonts.load('700 32px "Plus Jakarta Sans"'); } catch {} }
+    const c = document.createElement('canvas'); c.width = CW; c.height = CH;
+    const x = c.getContext('2d');
+    // latar navy dengan cahaya kuning
+    x.fillStyle = '#15233F'; x.fillRect(0, 0, CW, CH);
+    const g = x.createRadialGradient(CW / 2, 520, 40, CW / 2, 520, 620); g.addColorStop(0, 'rgba(255,212,92,.38)'); g.addColorStop(1, 'rgba(255,212,92,0)');
+    x.fillStyle = g; x.fillRect(0, 0, CW, CH);
+    // titik-titik dekorasi
+    x.fillStyle = 'rgba(245,241,232,.06)';
+    for (let i = 0; i < CW; i += 36) for (let j = 0; j < CH; j += 36) { x.beginPath(); x.arc(i, j, 2, 0, Math.PI * 2); x.fill(); }
+    // header
+    const logo = await loadImg(LOGO);
+    if (logo) x.drawImage(logo, 64, 56, 112, 112 * logo.height / logo.width);
+    x.fillStyle = '#F5F1E8'; x.textAlign = 'left'; x.textBaseline = 'middle';
+    x.font = '800 46px "Bricolage Grotesque", sans-serif'; x.fillText('Arena MIPAS', 196, 96);
+    x.fillStyle = '#9FB0CF'; x.font = '600 28px "Plus Jakarta Sans", sans-serif'; x.fillText('#TemanBelajarMIPAS', 196, 142);
+    // footer
+    x.fillStyle = '#FFD45C'; rr(x, 64, CH - 150, CW - 128, 96, 48); x.fill();
+    x.fillStyle = '#15233F'; x.textAlign = 'center'; x.font = '800 40px "Bricolage Grotesque", sans-serif';
+    x.fillText('Ayo main di mipas.vercel.app/arena', CW / 2, CH - 102);
+    return { c, x };
+  }
+  async function drawDailyCard() {
+    const { c, x } = await baseCard();
+    const score = D.answers.filter(Boolean).length;
+    const mipa = await loadImg(score >= 3 ? M.celebrate : M.thinking);
+    if (mipa) { const h = 380, w = h * mipa.width / mipa.height; x.drawImage(mipa, CW / 2 - w / 2, 210, w, h); }
+    x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    x.fillStyle = '#9FB0CF'; x.font = '700 34px "Plus Jakarta Sans", sans-serif';
+    const d = new Date(D.day).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    x.fillText(`${S.name ? S.name + ' · ' : ''}Tantangan Harian · ${d}`, CW / 2, 660);
+    x.fillStyle = '#FFD45C'; x.font = '800 210px "Bricolage Grotesque", sans-serif'; x.fillText(`${score}/5`, CW / 2, 870);
+    // kotak hasil
+    const n = D.answers.length, sz = 104, gap = 22, total = n * sz + (n - 1) * gap;
+    D.answers.forEach((a, k) => {
+      const bx = CW / 2 - total / 2 + k * (sz + gap), by = 920;
+      x.fillStyle = a ? '#2E8B57' : '#D64545'; rr(x, bx, by, sz, sz, 24); x.fill();
+      x.fillStyle = '#fff'; x.font = '800 58px "Plus Jakarta Sans", sans-serif'; x.textBaseline = 'middle'; x.fillText(a ? '✓' : '✕', bx + sz / 2, by + sz / 2 + 4); x.textBaseline = 'alphabetic';
+    });
+    x.fillStyle = '#F5F1E8'; x.font = '700 40px "Plus Jakarta Sans", sans-serif';
+    x.fillText(`🔥 Streak ${S.streak} hari   ·   ⭐ ${S.xp} XP`, CW / 2, 1110);
+    return c;
+  }
+  async function drawBadgeCard(b) {
+    const { c, x } = await baseCard();
+    const cols = { bronze: ['#C98A4B', '#F2C08A', '#8E5A2B'], silver: ['#A7B1C2', '#E9EEF5', '#6E7A8E'], gold: ['#E7B43A', '#FFE58A', '#A9741A'] }[b.tier];
+    const cx = CW / 2, cy = 520, R = 250;
+    x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    x.fillStyle = '#FFD45C'; x.font = '800 38px "Plus Jakarta Sans", sans-serif'; x.fillText('LENCANA BARU!', cx, 238);
+    // pita
+    const tail = (dx, col, rot) => { x.save(); x.translate(cx + dx, cy + R - 40); x.rotate(rot); x.fillStyle = col; x.beginPath(); x.moveTo(-50, 0); x.lineTo(50, 0); x.lineTo(50, 190); x.lineTo(0, 150); x.lineTo(-50, 190); x.closePath(); x.fill(); x.restore(); };
+    tail(-62, '#0F6E66', .2); tail(62, '#F2782A', -.2);
+    // cincin medali
+    const cg = x.createConicGradient ? x.createConicGradient(3.5, cx, cy) : null;
+    if (cg) { [cols[0], cols[1], cols[0], cols[2], cols[0], cols[1], cols[0]].forEach((col, i, arr) => cg.addColorStop(i / (arr.length - 1), col)); x.fillStyle = cg; } else x.fillStyle = cols[0];
+    x.beginPath(); x.arc(cx, cy, R, 0, Math.PI * 2); x.fill();
+    const fg = x.createRadialGradient(cx, cy - 80, 20, cx, cy, R - 22); fg.addColorStop(0, '#FFFFFF'); fg.addColorStop(1, '#F3EDE2');
+    x.fillStyle = fg; x.beginPath(); x.arc(cx, cy, R - 22, 0, Math.PI * 2); x.fill();
+    const mipa = await loadImg(M[b.m]);
+    if (mipa) { x.save(); x.beginPath(); x.arc(cx, cy, R - 22, 0, Math.PI * 2); x.clip(); const w = (R - 22) * 1.75, h = w * mipa.height / mipa.width; x.drawImage(mipa, cx - w / 2, cy - h / 2 + 30, w, h); x.restore(); }
+    // label tingkat
+    x.font = '800 30px "Plus Jakarta Sans", sans-serif'; const tw = x.measureText(TIER[b.tier].toUpperCase()).width + 48;
+    x.fillStyle = cols[2]; rr(x, cx + R - tw + 20, cy - R + 14, tw, 58, 29); x.fill();
+    x.fillStyle = cols[0]; rr(x, cx + R - tw + 20, cy - R + 8, tw, 58, 29); x.fill();
+    x.fillStyle = '#fff'; x.textBaseline = 'middle'; x.fillText(TIER[b.tier].toUpperCase(), cx + R - tw / 2 + 20, cy - R + 38); x.textBaseline = 'alphabetic';
+    // teks
+    x.fillStyle = '#F5F1E8'; x.font = '800 78px "Bricolage Grotesque", sans-serif'; x.fillText(b.name, cx, 1000);
+    x.fillStyle = '#9FB0CF'; x.font = '600 36px "Plus Jakarta Sans", sans-serif';
+    const used = wrapText(x, b.desc, cx, 1062, CW - 220, 48);
+    if (S.name) { x.fillStyle = '#FFD45C'; x.font = '700 34px "Plus Jakarta Sans", sans-serif'; x.fillText(`Diraih oleh ${S.name}`, cx, 1062 + used + 22); }
+    return c;
+  }
+  function copyText(txt) {
+    try { navigator.clipboard.writeText(txt).then(() => toast('Tersalin! Tempel di grup WhatsApp kelas'), () => toast('Gagal menyalin otomatis')); } catch { toast('Gagal menyalin otomatis'); }
+  }
+  let shareUrl = null, shareTxt = '';
+  const SITE = 'https://mipas.vercel.app/arena';
+  async function shareImage(draw, filename, text) {
+    shareTxt = text;
+    const canvas = await draw();
+    const blob = await new Promise((res) => canvas.toBlob(res, 'image/jpeg', 0.92));
+    filename = filename.replace(/\.png$/, '.jpg');
+    const file = blob ? new File([blob], filename, { type: 'image/jpeg' }) : null;
+    // 1) Menu bagikan bawaan HP/laptop, dengan gambar
+    if (navigator.share) {
+      try {
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Arena MIPAS', text }); return; }
+        await navigator.share({ title: 'Arena MIPAS', text, url: SITE }); return;
+      } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    // 2) Cadangan: lembar bagikan buatan sendiri
+    if (shareUrl) URL.revokeObjectURL(shareUrl);
+    shareUrl = blob ? URL.createObjectURL(blob) : '';
+    $('#share-preview').src = shareUrl;
+    $('#share-name').textContent = text.split('\n')[0];
+    const enc = encodeURIComponent;
+    $('#sh-wa').href = `https://wa.me/?text=${enc(text)}`;
+    $('#sh-tg').href = `https://t.me/share/url?url=${enc(SITE)}&text=${enc(text)}`;
+    $('#sh-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${enc(SITE)}`;
+    $('#sh-x').href = `https://twitter.com/intent/tweet?text=${enc(text)}`;
+    const dl = $('#share-dl'); dl.href = shareUrl; dl.download = filename;
+    $('#sharebox').hidden = false;
+  }
+  $('#share-copy').addEventListener('click', () => copyText(shareTxt));
+  $('#sh-copy2').addEventListener('click', () => copyText(shareTxt));
+  $('#share-close').addEventListener('click', () => ($('#sharebox').hidden = true));
+  $('#sharebox').addEventListener('click', (e) => { if (e.target.id === 'sharebox') $('#sharebox').hidden = true; });
+
+  /* ---------- Mulai ---------- */
+  renderName();
+  renderHub();
+})();
+</script>
+
+</body>
+</html>

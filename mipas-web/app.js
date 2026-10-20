@@ -342,9 +342,22 @@
     nb.onclick = nextV ? () => openPlayer(nextV) : null;
 
     if (!dlg.open) dlg.showModal();
+
+    // Setiap video punya alamat sendiri (?v=ID) supaya bisa dibagikan dan terhitung di Analytics
+    if (!PREVIEW && !playlist && v.id) {
+      const url = `${location.pathname}?v=${encodeURIComponent(v.id)}`;
+      if (location.search !== `?v=${encodeURIComponent(v.id)}`) history.pushState({ v: v.id }, '', url);
+      document.title = `${title} · MIPAS`;
+    }
   }
+  const baseTitle = document.title;
   function closePlayer() { dlg.close(); }
-  dlg.addEventListener('close', () => ($('#player-frame').innerHTML = ''));
+  dlg.addEventListener('close', () => {
+    $('#player-frame').innerHTML = '';
+    document.title = baseTitle;
+    if (!PREVIEW && new URLSearchParams(location.search).has('v')) history.replaceState({}, '', location.pathname + location.hash);
+  });
+  addEventListener('popstate', () => { if (dlg.open && !new URLSearchParams(location.search).has('v')) dlg.close(); });
   $('#player-close').addEventListener('click', closePlayer);
   dlg.addEventListener('click', (e) => { if (e.target === dlg) closePlayer(); });
   document.querySelectorAll('[data-play-all]').forEach((b) =>
@@ -410,6 +423,13 @@
       document.querySelector('.filters').hidden = true;
       $('#fallback-frame').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylist}&rel=0" title="Semua video MIPAS Channel" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
       $('#fallback').hidden = false;
+    }
+
+    // Buka video langsung dari link ?v=ID (misalnya dari Arena atau link yang dibagikan)
+    const deep = new URLSearchParams(location.search).get('v');
+    if (deep) {
+      const v = byId(deep);
+      if (v) { document.getElementById('video').scrollIntoView(); openPlayer(v); }
     }
   }
   load();
