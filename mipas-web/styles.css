@@ -51,13 +51,15 @@ h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; }
   transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
   white-space: nowrap;
 }
-.btn svg { width: 18px; height: 18px; fill: currentColor; }
+.btn svg { width: 18px; height: 18px; margin: -2px 0; fill: currentColor; }
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btn-sm { padding: 9px 16px; font-size: 14px; }
 .btn-primary { background: var(--primary); color: var(--primary-ink); box-shadow: 0 6px 0 -1px #0A4F49; }
 .btn-primary:hover { box-shadow: 0 7px 0 -1px #0A4F49; }
-.btn-ghost { background: var(--paper); color: var(--ink); border-color: var(--ink); }
+.btn-ghost { background: var(--paper); color: var(--ink); border-color: var(--ink); box-shadow: 0 6px 0 -1px var(--ink); }
+.btn-ghost:hover { box-shadow: 0 7px 0 -1px var(--ink); }
+.btn-ghost:active { transform: translateY(4px); box-shadow: 0 2px 0 -1px var(--ink); }
 .btn-yt { background: var(--yt); color: #fff; }
 .btn-wa { background: #1FA855; color: #fff; }
 
@@ -221,7 +223,7 @@ h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; }
 .player-frame { aspect-ratio: 16/9; background: #000; }
 .player-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
 .player-actions { padding: 12px 18px 16px; display: flex; justify-content: flex-end; }
-.player-actions .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.player-actions .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); box-shadow: none; }
 
 /* Responsive */
 @media (max-width: 1000px) {
