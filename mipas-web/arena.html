@@ -738,14 +738,14 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 <div class="award" id="namebox" hidden>
   <form class="award-card name-card" id="name-form" autocomplete="off">
     <img class="name-mipa" data-m="success" alt="" width="199" height="240">
-    <h3>Mau dipanggil siapa?</h3>
-    <p class="award-desc">Nama panggilan dipakai Mipa untuk menyapamu dan di teks yang kamu bagikan. Nama ini hanya tersimpan di perangkat ini.</p>
+    <h3>Sebelum main, kenalan dulu yuk!</h3>
+    <p class="award-desc">Mau dipanggil siapa? Nama ini dipakai Mipa untuk menyapamu dan muncul di gambar hasil yang kamu bagikan. Hanya tersimpan di perangkat ini.</p>
     <label class="sr-only" for="name-input">Nama panggilan</label>
     <input class="name-input" id="name-input" type="text" maxlength="20" placeholder="Contoh: Dina" enterkeyhint="done">
     <p class="name-err" id="name-err" hidden>Tulis nama panggilan dulu, ya.</p>
     <div class="award-actions">
-      <button type="submit" class="btn btn-primary">Simpan</button>
-      <button type="button" class="btn btn-ghost" id="name-skip">Nanti saja</button>
+      <button type="submit" class="btn btn-primary">Simpan & mulai main</button>
+      <button type="button" class="btn btn-ghost" id="name-skip">Lewati</button>
     </div>
   </form>
 </div>
@@ -914,7 +914,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     $('#award').hidden = true; stopConfetti();
     renderBadges(); renderStats();
     if (awardQueue.length) setTimeout(nextAward, 250);
-    else if (!$('#view-hub').hidden) maybeAskName();
   }
   $('#award').addEventListener('click', (e) => { if (e.target.id === 'award') closeAward(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#award').hidden) closeAward(); });
@@ -967,14 +966,15 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
   $('#namebox').addEventListener('click', (e) => { if (e.target.id === 'namebox') closeName(); });
   // Ditanyakan sekali, setelah pemain kembali ke Arena usai main pertama kali
   function maybeAskName() {
-    if (!S.name && !S.nameAsked && S.xp > 0 && $('#award').hidden && !awardQueue.length) setTimeout(askName, 500);
+    if (!S.name && !S.nameAsked && $('#award').hidden && !awardQueue.length) setTimeout(askName, 350);
   }
 
   /* ---------- Navigasi ---------- */
   function show(name) {
     ['hub', 'daily', 'glbb', 'asean', 'surya', 'kilat', 'sila'].forEach((v) => { const el = $('#view-' + v); el.hidden = v !== name; if (v === name) { el.classList.remove('view-enter'); void el.offsetWidth; el.classList.add('view-enter'); } });
     window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-    if (name === 'hub') { renderHub(); maybeAskName(); }
+    if (name === 'hub') renderHub();
+    if (name !== 'hub') maybeAskName();
     if (name === 'daily') startDaily();
     if (name === 'asean') introAsean();
     if (name === 'surya') startSurya();
