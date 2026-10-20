@@ -50,11 +50,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--paper); border: 2px solid var(--line); font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pill .ico { font-size: 15px; }
 img.ico { width: 20px; height: 20px; display: block; }
-img.ei.wave { transform-origin: 70% 85%; animation: wave 1.4s ease-in-out .3s 2; }
+
 @keyframes wave { 0%,60%,100% { transform: rotate(0); } 10%,30% { transform: rotate(16deg); } 20%,40% { transform: rotate(-8deg); } }
 @media (prefers-reduced-motion: reduce) { img.ei.wave { animation: none; } }
 img.ei.off { filter: grayscale(1); opacity: .35; }
-img.ei, .result img.ei, .endcard img.ei { animation: none; width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin: 0 .1em; display: inline-block; }
+img.ei.wave { transform-origin: 70% 85%; animation: wave 1.4s ease-in-out .3s 2; }
+img.ei { animation: none; width: 1.15em !important; height: 1.15em !important; max-width: none !important; vertical-align: -0.2em !important; margin: 0 .1em !important; display: inline-block !important; position: static !important; transform: none; }
 .pill.bump { animation: bump .45s ease; }
 
 /* Hub */
@@ -209,7 +210,9 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 .lab-msg { display: flex; gap: 12px; align-items: center; min-height: 72px; }
 .lab-msg img { width: 64px; height: auto; flex: none; }
 .lab-msg img.hop { animation: hop .6s cubic-bezier(.3,1.6,.5,1); }
-.lab-msg p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.lab-msg p { margin: 0; font-size: 14px; color: var(--ink-2); flex: 1 1 0; min-width: 0; }
+.lab-msg > img { width: 72px !important; order: 2; }
+.panel > .lab-msg { margin: 0 0 18px !important; padding: 0 0 16px; border-bottom: 1.5px dashed var(--line, #E6DFD2); }
 .lab-msg strong { display: block; color: var(--ink); font: 800 16px var(--display); }
 .stars-big { font-size: 22px; letter-spacing: 2px; }
 .lab-actions { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -489,6 +492,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 @media (max-width: 640px) { .profile { padding: 3px; gap: 0; border-width: 2px; } .pname, .pedit { display: none; } .avatar { width: 30px; height: 30px; } .stats { gap: 6px; } }
 @media (max-width: 380px) { .brand { font-size: 15px; gap: 6px; } .brand-logo { width: 32px; height: 32px; } .pill { padding: 5px 7px; gap: 4px; font-size: 12.5px; } .stats { gap: 4px; } .avatar { width: 28px; height: 28px; } .top-in { gap: 6px; } }
 @media (max-width: 400px) { .brand-text { display: none; } .brand-logo { width: 42px; height: 42px; } }
+.best-note { margin-top: 18px !important; }
 .back-site { display: inline-block; margin-bottom: 14px; font-weight: 700; font-size: 14px; color: var(--ink-2); text-decoration: none; }
 .back-site:hover { color: var(--teal); }
 [hidden] { display: none !important; }
@@ -706,6 +710,10 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
         </div>
       </div>
       <div class="panel">
+        <div class="lab-msg">
+          <img id="lab-mipa" data-m="scientist" alt="" width="191" height="240">
+          <p id="lab-text"><strong>Siap, Ilmuwan?</strong>Hitung dulu pakai rumus, baru luncurkan.</p>
+        </div>
         <div class="ctrl" id="ctrl-v0">
           <label for="in-v0">Kecepatan awal v₀ <span id="v0-val">0 m/s</span></label>
           <input type="range" id="in-v0" min="0" max="15" step="0.5" value="0">
@@ -723,10 +731,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
         <div class="lab-actions">
           <button class="btn btn-primary" id="launch" type="button">Luncurkan ▶</button>
           <button class="btn btn-ghost" id="reset" type="button">Ulang</button>
-        </div>
-        <div class="lab-msg">
-          <img id="lab-mipa" data-m="scientist" alt="" width="191" height="240">
-          <p id="lab-text"><strong>Siap, Ilmuwan?</strong>Hitung dulu pakai rumus, baru luncurkan.</p>
         </div>
       </div>
     </div>
@@ -1200,11 +1204,11 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
      LUNCURKAN TROLI GLBB
      ===================================================== */
   const LEVELS = [
-    { name: 'GLB', t: 4, target: 20, lockA: 0, v0: 0, a: 0, hint: 'Percepatan dikunci 0, jadi ini GLB: s = v₀ × t.' },
-    { name: 'GLB', t: 5, target: 35, lockA: 0, v0: 0, a: 0, hint: 'Masih GLB. Berapa v₀ supaya 5 detik menempuh 35 m?' },
-    { name: 'GLBB', t: 4, target: 24, lockV0: 0, v0: 0, a: 0, hint: 'Troli mulai dari diam (v₀ = 0). Cari percepatannya.' },
-    { name: 'GLBB', t: 4, target: 40, v0: 0, a: 0, hint: 'Bebas atur v₀ dan a. Ada lebih dari satu jawaban benar!' },
-    { name: 'Perlambatan', t: 4, target: 32, lockV0: 12, v0: 12, a: 0, hint: 'Troli melaju 12 m/s lalu direm. Percepatannya harus negatif.' },
+    { name: 'GLB', t: 4, target: 20, lockA: 0, v0: 0, a: 0, hint: 'Troli harus sampai di bendera 20 m tepat setelah 4 detik. Berapa kecepatan awal v₀? Petunjuk: jarak = kecepatan × waktu.' },
+    { name: 'GLB', t: 5, target: 35, lockA: 0, v0: 0, a: 0, hint: 'Sekarang benderanya di 35 m dan waktunya 5 detik. Berapa kecepatan awal v₀ yang pas?' },
+    { name: 'GLBB', t: 4, target: 24, lockV0: 0, v0: 0, a: 0, hint: 'Troli mulai dari diam (v₀ = 0) dan harus menempuh 24 m dalam 4 detik. Berapa percepatan a?' },
+    { name: 'GLBB', t: 4, target: 40, v0: 0, a: 0, hint: 'Tempuh 40 m dalam 4 detik. Kamu bebas atur v₀ dan a, ada lebih dari satu jawaban yang benar!' },
+    { name: 'Perlambatan', t: 4, target: 32, lockV0: 12, v0: 12, a: 0, hint: 'Troli melaju 12 m/s lalu direm. Supaya berhenti di 32 m setelah 4 detik, berapa percepatan a? Ingat, direm berarti a negatif.' },
   ];
   const TRACK = 60; // meter
   let L = 0, v0 = 0, a = 0, anim = null, lastRun = null;
@@ -1457,7 +1461,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     sideSet('asean', M.explorer, 'Siap menjelajah?', 'Ada 11 negara anggota ASEAN, termasuk Timor-Leste yang bergabung tahun 2025.');
     box.innerHTML = `<div class="intro"><img src="${M.explorer}" alt="" width="191" height="240"><h3>Tebak Negara ASEAN</h3>
       <p>10 soal tentang ibu kota, mata uang, dan fakta negara-negara Asia Tenggara. Jawab beruntun untuk kombo <img class="ei" src="arena-assets/icon-fire.webp" alt="">.</p>
-      <button type="button" class="btn btn-primary" id="asean-go">Mulai ▶</button>${S.best.asean != null ? `<p class="countdown">Skor terbaikmu: ${S.best.asean}/10</p>` : ''}</div>`;
+      <button type="button" class="btn btn-primary" id="asean-go">Mulai ▶</button>${S.best.asean != null ? `<p class="countdown best-note">Skor terbaikmu: ${S.best.asean}/10</p>` : ''}</div>`;
     $('#asean-go').addEventListener('click', startAsean);
   }
   function startAsean() { A = { qs: buildAsean(), i: 0, score: 0, combo: 0 }; $('#asean-sc').textContent = 0; renderAsean(); }
@@ -1601,7 +1605,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     $('#kilat-box').innerHTML = `<div class="intro"><img src="${M.stopwatch}" alt="" width="235" height="240"><h3>Hitung Kilat</h3>
       <p>Jawab soal sebanyak-banyaknya dalam 60 detik.</p>
       <ul><li>Penjumlahan, pengurangan, perkalian, pembagian</li><li>Nilai tempat bilangan sampai 10.000</li><li>Pecahan sederhana dan rasio</li></ul>
-      <button type="button" class="btn btn-primary" id="kilat-go">Mulai ▶</button>${S.best.kilat ? `<p class="countdown">Rekormu: ${S.best.kilat} benar</p>` : ''}</div>`;
+      <button type="button" class="btn btn-primary" id="kilat-go">Mulai ▶</button>${S.best.kilat ? `<p class="countdown best-note">Rekormu: ${S.best.kilat} benar</p>` : ''}</div>`;
     $('#kilat-go').addEventListener('click', startKilat);
   }
   function kKeys(e) { if (!K || K.over) return; const n = +e.key; if (n >= 1 && n <= 3) { const b = $('#kilat-box').querySelectorAll('.opt')[n - 1]; if (b && !b.disabled) b.click(); } }
