@@ -68,8 +68,8 @@ img.ei, .result img.ei, .endcard img.ei { animation: none; width: 1.15em; height
 .game-card:hover { transform: translateY(-4px) rotate(-.4deg); box-shadow: 0 22px 40px -18px rgba(21,35,63,.35); }
 .game-card:active { transform: translateY(-1px) scale(.99); }
 .gc-art { position: relative; height: 170px; display: grid; place-items: center; overflow: hidden; }
-.gc-art.daily { background: radial-gradient(circle at 80% 20%, rgba(255,212,92,.55) 0 22%, transparent 23%), var(--teal); }
-.gc-art.glbb { background: var(--board); }
+.gc-art.daily { background: url('arena-assets/bg-daily.webp') left center / cover no-repeat, var(--teal); }
+.gc-art.glbb { background: url('arena-assets/bg-glbb.webp') left center / cover no-repeat, var(--board); }
 .gc-art img { position: absolute; right: 14px; bottom: -6px; width: 118px; height: auto; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
 .game-card:hover .gc-art > img { transform: translateY(-6px) rotate(-4deg); }
 .gc-tiles { display: flex; gap: 6px; position: absolute; left: 22px; top: 50%; transform: translateY(-50%); }
@@ -185,7 +185,8 @@ img.ei, .result img.ei, .endcard img.ei { animation: none; width: 1.15em; height
 .lv:hover:not(:disabled) { border-color: var(--chalk); }
 .lv.cur { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
 .lv:disabled { opacity: .35; cursor: not-allowed; }
-.lv-stars { font-size: 9px; display: block; line-height: 1; margin-top: -2px; letter-spacing: -1px; }
+.lv { padding: 0; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+.lv-stars { font-size: 9px; display: block; line-height: 1; margin-top: 2px; letter-spacing: 0; white-space: nowrap; text-align: center; }
 .mission { font-size: 14px; color: var(--chalk-2); }
 .mission b { color: var(--yellow); }
 canvas { display: block; width: 100%; height: 280px; }
@@ -219,10 +220,10 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 .gc-art { height: 150px; }
 .gc-art img { width: 100px; }
 .gc-body h2 { font-size: 21px; }
-.gc-art.asean { background: radial-gradient(circle at 15% 85%, rgba(255,255,255,.12) 0 30%, transparent 31%), #2E5AAC; }
-.gc-art.surya { background: #10172B; }
-.gc-art.kilat { background: var(--orange); }
-.gc-art.sila { background: #B83A3A; }
+.gc-art.asean { background: url('arena-assets/bg-asean.webp') left center / cover no-repeat, #2E5AAC; }
+.gc-art.surya { background: url('arena-assets/bg-surya.webp') left center / cover no-repeat, #10172B; }
+.gc-art.kilat { background: url('arena-assets/bg-kilat.webp') left center / cover no-repeat, var(--orange); }
+.gc-art.sila { background: url('arena-assets/bg-sila.webp') left center / cover no-repeat, #B83A3A; }
 .gc-chips { position: absolute; left: 20px; top: 26px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .gc-chips span { background: var(--paper); color: var(--ink); font-weight: 800; font-size: 13px; padding: 6px 12px; border-radius: 999px; box-shadow: 0 4px 0 rgba(0,0,0,.15); animation: pop .5s cubic-bezier(.2,.8,.3,1.4) both; }
 .gc-chips span:nth-child(2) { animation-delay: .1s; margin-left: 18px; } .gc-chips span:nth-child(3) { animation-delay: .2s; }
@@ -358,6 +359,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 .badges-head h3 { font-size: 22px; margin: 0; }
 .badges-sub { margin: 4px 0 0; color: var(--ink-3); font-size: 14px; }
 .rank { display: flex; align-items: center; gap: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 10px 16px 10px 10px; box-shadow: var(--shadow); min-width: 280px; }
+.rank-ico img { width: 30px; height: 30px; display: block; }
 .rank-ico { width: 44px; height: 44px; border-radius: 14px; background: var(--ink); color: var(--yellow); display: grid; place-items: center; font-size: 22px; flex: none; }
 .rank-txt { flex: 1; min-width: 0; }
 .rank-txt b { display: block; font: 800 16px var(--display); }
@@ -565,7 +567,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       <button class="game-card" type="button" data-open="daily">
         <span class="gc-status" id="daily-status">Belum dimainkan hari ini</span>
         <div class="gc-art daily" aria-hidden="true">
-          <div class="gc-tiles"><span class="ok">✓</span><span class="ok">✓</span><span class="no">✗</span><span class="ok">✓</span><span>?</span></div>
           <img data-m="explore" alt="" width="201" height="240">
         </div>
         <div class="gc-body">
@@ -579,8 +580,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       <button class="game-card" type="button" data-open="glbb">
         <span class="gc-status" id="glbb-status">0 / 15 <img class="ei" src="arena-assets/icon-star.webp" alt="bintang"></span>
         <div class="gc-art glbb" aria-hidden="true">
-          <span class="gc-formula">s = v₀t + ½at²</span>
-          <div class="gc-track"></div><div class="gc-flag"></div><div class="gc-cart"></div>
           <img data-m="scientist" alt="" width="235" height="240">
         </div>
         <div class="gc-body">
@@ -594,7 +593,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       <button class="game-card" type="button" data-open="asean">
         <span class="gc-status" id="asean-status">Belum dimainkan</span>
         <div class="gc-art asean" aria-hidden="true">
-          <div class="gc-chips"><span>Hanoi?</span><span class="hit">Manila ✓</span><span>Dili?</span></div>
           <img data-m="explorer" alt="" width="191" height="240">
         </div>
         <div class="gc-body">
@@ -628,7 +626,6 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
       <button class="game-card" type="button" data-open="kilat">
         <span class="gc-status" id="kilat-status">Belum ada rekor</span>
         <div class="gc-art kilat" aria-hidden="true">
-          <div class="gc-kilat"><small>Berapa hasilnya?</small>7 × 8 = ?</div>
           <img data-m="stopwatch" alt="" width="200" height="207">
         </div>
         <div class="gc-body">
@@ -868,10 +865,10 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
   ];
   const TIER = { bronze: 'Perunggu', silver: 'Perak', gold: 'Emas' };
   const RANKS = [
-    { xp: 0, ico: '🌱', name: 'Pemula' },
-    { xp: 50, ico: '📘', name: 'Pelajar Rajin' },
-    { xp: 150, ico: '⭐', name: 'Bintang Kelas' },
-    { xp: 300, ico: '🏆', name: 'Juara MIPAS' },
+    { xp: 0, ico: 'arena-assets/icon-sprout.webp', name: 'Pemula' },
+    { xp: 50, ico: 'arena-assets/icon-book.webp', name: 'Pelajar Rajin' },
+    { xp: 150, ico: STAR, name: 'Bintang Kelas' },
+    { xp: 300, ico: 'arena-assets/icon-trophy.webp', name: 'Juara MIPAS' },
   ];
 
   function medalHTML(b, opts = {}) {
@@ -898,7 +895,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
     const cur = RANKS[r], next = RANKS[r + 1];
     const pct = next ? Math.round(((xp - cur.xp) / (next.xp - cur.xp)) * 100) : 100;
     $('#rank').innerHTML = `
-      <span class="rank-ico">${cur.ico}</span>
+      <span class="rank-ico"><img src="${cur.ico}" alt=""></span>
       <div class="rank-txt"><b>${cur.name}</b><small>${next ? `${xp} XP · ${next.xp - xp} XP lagi menuju ${next.name}` : `${xp} XP · gelar tertinggi!`}</small><div class="rank-bar"><i style="width:${pct}%"></i></div></div>
       <div class="rank-count">${S.badges.length}/${BADGES.length}<small>lencana</small></div>`;
   }
