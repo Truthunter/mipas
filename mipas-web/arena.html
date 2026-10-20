@@ -112,7 +112,8 @@ img.ei, .result img.ei, .endcard img.ei { animation: none; width: 1.15em; height
 .btn-primary { background: var(--teal); color: #fff; box-shadow: 0 5px 0 -1px #0A4F49; }
 .btn-primary:active { box-shadow: 0 2px 0 -1px #0A4F49; }
 .btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-.btn-ghost { background: var(--paper); border-color: var(--ink); }
+.btn-ghost { background: var(--paper); border-color: var(--ink); box-shadow: 0 5px 0 -1px var(--ink); }
+.btn-ghost:active { box-shadow: 0 2px 0 -1px var(--ink); }
 .btn-ghost:hover { background: var(--ink); color: #fff; }
 .btn-yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 5px 0 -1px #C9A035; }
 
@@ -445,7 +446,7 @@ input[type=range]:disabled { cursor: not-allowed; opacity: .5; }
 .name-err { margin: 0 0 10px; color: var(--red); font-size: 13.5px; font-weight: 600; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 /* Bagikan */
-.ico-share { width: 18px; height: 18px; fill: currentColor; }
+.ico-share { width: 18px; height: 18px; margin: -2px 0; fill: currentColor; }
 .sheet-wrap { align-items: end; z-index: 60; }
 .sheet-wrap .share-card { border-radius: 26px 26px 26px 26px; padding: 12px 18px 18px; text-align: left; }
 .sheet-wrap .share-card::before { display: none; }
